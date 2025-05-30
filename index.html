@@ -10,7 +10,7 @@
 └─ js/
    └─ main.js
 
-Below are contents of each file. Paste each into the respective file in your repo. */
+Below are contents of each file. Paste into your repo. */
 
 --- index.html ---
 <!DOCTYPE html>
@@ -31,18 +31,22 @@ Below are contents of each file. Paste each into the respective file in your rep
       <li><a href="contact.html">Kontakt</a></li>
     </ul>
   </nav>
-  <header class="hero">
-    <h1>DragonConfigs</h1>
-    <p>Twoje centrum cheat configs do Minecraft</p>
-    <a href="configs.html" class="button">Zobacz Konfigi</a>
-  </header>
-  <section class="about">
-    <h2>O nas</h2>
-    <p>DragonConfigs to społeczność tworząca i udostępniająca najlepsze konfiguracje cheatów do Minecrafta. Dołącz do nas!</p>
-  </section>
-  <footer>
-    &copy; 2025 DragonConfigs | Made by XxvoltikxX
-  </footer>
+  <div id="page" class="page">
+    <div class="page-inner">
+      <header class="hero" id="home">
+        <h1>DragonConfigs</h1>
+        <p>Twoje centrum cheat configs do Minecraft</p>
+        <a href="configs.html" class="button">Zobacz Konfigi</a>
+      </header>
+      <section class="about">
+        <h2>O nas</h2>
+        <p>DragonConfigs to społeczność tworząca i udostępniająca najlepsze konfiguracje cheatów do Minecrafta. Dołącz do nas!</p>
+      </section>
+      <footer>
+        &copy; 2025 DragonConfigs | Made by XxvoltikxX
+      </footer>
+    </div>
+  </div>
   <script src="js/main.js"></script>
 </body>
 </html>
@@ -58,7 +62,7 @@ Below are contents of each file. Paste each into the respective file in your rep
 </head>
 <body>
   <div id="preloader"><div class="spinner"></div></div>
-  <nav> ... <!-- same nav as index.html, change active class to Konfigi -->
+  <nav>
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="configs.html" class="active">Konfigi</a></li>
@@ -66,30 +70,33 @@ Below are contents of each file. Paste each into the respective file in your rep
       <li><a href="contact.html">Kontakt</a></li>
     </ul>
   </nav>
-  <section class="section-content">
-    <h2>Nasze Konfigi</h2>
-    <div class="cards">
-      <!-- individual cards -->
-      <div class="card">
-        <h3>Verus Legit</h3>
-        <p>Smooth ruch, minimalne wykrycie.</p>
-        <a href="configs/verus-legit.xml" class="button">Pobierz</a>
-      </div>
-      <div class="card">
-        <h3>Matrix Rage</h3>
-        <p>Agresywny aimbot i ESP.</p>
-        <a href="configs/matrix-rage.xml" class="button">Pobierz</a>
-      </div>
-      <div class="card">
-        <h3>Vulcan Silent Aim</h3>
-        <p>Cichy aimbot, anti-recoil.</p>
-        <a href="configs/vulcan-silent.xml" class="button">Pobierz</a>
-      </div>
+  <div id="page" class="page">
+    <div class="page-inner">
+      <section class="section-content">
+        <h2>Nasze Konfigi</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Verus Legit</h3>
+            <p>Smooth ruch, minimalne wykrycie.</p>
+            <a href="configs/verus-legit.xml" class="button">Pobierz</a>
+          </div>
+          <div class="card">
+            <h3>Matrix Rage</h3>
+            <p>Agresywny aimbot i ESP.</p>
+            <a href="configs/matrix-rage.xml" class="button">Pobierz</a>
+          </div>
+          <div class="card">
+            <h3>Vulcan Silent Aim</h3>
+            <p>Cichy aimbot, anti-recoil.</p>
+            <a href="configs/vulcan-silent.xml" class="button">Pobierz</a>
+          </div>
+        </div>
+      </section>
+      <footer>
+        &copy; 2025 DragonConfigs
+      </footer>
     </div>
-  </section>
-  <footer>
-    &copy; 2025 DragonConfigs
-  </footer>
+  </div>
   <script src="js/main.js"></script>
 </body>
 </html>
@@ -105,7 +112,7 @@ Below are contents of each file. Paste each into the respective file in your rep
 </head>
 <body>
   <div id="preloader"><div class="spinner"></div></div>
-  <nav> ... <!-- nav, active Pobierz -->
+  <nav>
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="configs.html">Konfigi</a></li>
@@ -113,13 +120,17 @@ Below are contents of each file. Paste each into the respective file in your rep
       <li><a href="contact.html">Kontakt</a></li>
     </ul>
   </nav>
-  <section class="section-content">
-    <h2>Pobierz Cały Pakiet</h2>
-    <a href="https://github.com/XxvoltikxX/DragonHacks-DragonConfigs/archive/refs/heads/main.zip" class="button">Download ZIP</a>
-  </section>
-  <footer>
-    &copy; 2025 DragonConfigs
-  </footer>
+  <div id="page" class="page">
+    <div class="page-inner">
+      <section class="section-content">
+        <h2>Pobierz Cały Pakiet</h2>
+        <a href="https://github.com/XxvoltikxX/DragonHacks-DragonConfigs/archive/refs/heads/main.zip" class="button">Download ZIP</a>
+      </section>
+      <footer>
+        &copy; 2025 DragonConfigs
+      </footer>
+    </div>
+  </div>
   <script src="js/main.js"></script>
 </body>
 </html>
@@ -135,7 +146,7 @@ Below are contents of each file. Paste each into the respective file in your rep
 </head>
 <body>
   <div id="preloader"><div class="spinner"></div></div>
-  <nav> ... <!-- nav, active Kontakt -->
+  <nav>
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="configs.html">Konfigi</a></li>
@@ -143,22 +154,26 @@ Below are contents of each file. Paste each into the respective file in your rep
       <li><a href="contact.html" class="active">Kontakt</a></li>
     </ul>
   </nav>
-  <section class="section-content">
-    <h2>Kontakt</h2>
-    <p>Dołącz na Discord: <a href="https://discord.gg/dragonconfigs">dragonconfigs</a></p>
-    <p>Email: <a href="mailto:voltik@dragonconfigs.xyz">voltik@dragonconfigs.xyz</a></p>
-  </section>
-  <footer>
-    &copy; 2025 DragonConfigs
-  </footer>
+  <div id="page" class="page">
+    <div class="page-inner">
+      <section class="section-content">
+        <h2>Kontakt</h2>
+        <p>Dołącz na Discord: <a href="https://discord.gg/dragonconfigs">dragonconfigs</a></p>
+        <p>Email: <a href="mailto:voltik@dragonconfigs.xyz">voltik@dragonconfigs.xyz</a></p>
+      </section>
+      <footer>
+        &copy; 2025 DragonConfigs
+      </footer>
+    </div>
+  </div>
   <script src="js/main.js"></script>
 </body>
 </html>
 
 --- css/style.css ---
-/* Reset & base */
+/* Reset & Base */
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Orbitron',sans-serif; background:#050505; color:#fff; }
+body { font-family:'Orbitron',sans-serif; background:#050505; color:#fff; overflow-x:hidden; }
 a { text-decoration:none; }
 
 /* Preloader */
@@ -171,6 +186,12 @@ nav { background:#111; padding:10px 0; }
 nav ul { display:flex; justify-content:center; gap:30px; list-style:none; }
 nav a { color:#fff; padding:8px 12px; transition:background .3s; }
 nav a.active, nav a:hover { background:#00ffd1; color:#050505; border-radius:4px; }
+
+/* Page wrapper & transition */
+.page { position:relative; overflow:hidden; }
+.page-inner { transition:transform .5s ease, opacity .5s ease; transform: translateX(100%); opacity:0; }
+.page.page-enter-active .page-inner { transform: translateX(0); opacity:1; }
+.page.page-exit-active .page-inner { transform: translateX(-100%); opacity:0; }
 
 /* Hero */
 .hero { height:80vh; background:url('https://i.imgur.com/3f6vS4W.jpg') center/cover no-repeat; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
@@ -198,10 +219,25 @@ nav a.active, nav a:hover { background:#00ffd1; color:#050505; border-radius:4px
 /* Footer */
 footer { background:#0a0a0a; padding:30px 0; text-align:center; color:#555; }
 
-/* Glow animation */
+/* Glow */
 @keyframes glow { from { text-shadow:0 0 5px #00ffd1; } to { text-shadow:0 0 20px #00ffd1; }}
 
 --- js/main.js ---
 window.addEventListener('load', () => {
+  // Hide preloader
   document.getElementById('preloader').style.display = 'none';
+  // Page enter transition
+  const page = document.getElementById('page');
+  page.classList.add('page-enter-active');
+
+  // Intercept internal nav links
+  document.querySelectorAll('a[href$=".html"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const href = link.getAttribute('href');
+      page.classList.remove('page-enter-active');
+      page.classList.add('page-exit-active');
+      setTimeout(() => window.location.href = href, 500);
+    });
+  });
 });
