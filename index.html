@@ -1,113 +1,207 @@
+/* Project structure:
+
+/ (root)
+├─ index.html
+├─ configs.html
+├─ download.html
+├─ contact.html
+├─ css/
+│  └─ style.css
+└─ js/
+   └─ main.js
+
+Below are contents of each file. Paste each into the respective file in your repo. */
+
+--- index.html ---
 <!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DragonConfigs</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    /* Reset & Base */
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Orbitron', sans-serif; background:#050505; color:#fff; overflow-x:hidden; }
-    a { text-decoration:none; }
-
-    /* Preloader */
-    #preloader { position:fixed; top:0; left:0; width:100%; height:100%; background:#050505; display:flex; align-items:center; justify-content:center; z-index:9999; }
-    .spinner { width:60px; height:60px; border:6px solid #111; border-top:6px solid #00ffd1; border-radius:50%; animation:spin 1s infinite linear; }
-    @keyframes spin { 100% { transform:rotate(360deg);} }
-
-    /* Header & Nav */
-    header { position:relative; height:100vh; background:url('https://i.imgur.com/3f6vS4W.jpg') center/cover no-repeat; display:flex; align-items:center; justify-content:center; text-align:center; }
-    header::after { content:''; position:absolute; inset:0; background:rgba(5,5,5,0.7); }
-    header h1 { position:relative; font-size:4rem; color:#00ffd1; text-shadow:0 0 10px #00ffd1, 0 0 20px #00ffd1; animation: glow 2s ease-in-out infinite alternate; }
-    @keyframes glow { from { text-shadow:0 0 5px #00ffd1, 0 0 15px #00ffd1; } to { text-shadow:0 0 20px #00ffd1, 0 0 40px #00ffd1; } }
-    nav { position:absolute; top:20px; width:100%; display:flex; justify-content:center; gap:30px; }
-    nav a { color:#fff; font-weight:700; padding:10px 15px; transition:color .3s, background .3s; }
-    nav a:hover { color:#050505; background:#00ffd1; border-radius:4px; }
-
-    /* Sections */
-    section { padding:80px 20px; text-align:center; }
-    .section-title { font-size:2.5rem; margin-bottom:20px; color:#00ffd1; }
-    .button { display:inline-block; margin:10px; padding:12px 28px; font-size:1rem; font-weight:700; color:#050505; background:#00ffd1; border:none; border-radius:6px; cursor:pointer; transition:transform .3s, box-shadow .3s; }
-    .button:hover { transform:scale(1.05); box-shadow:0 0 15px rgba(0,255,209,0.7); }
-
-    /* Config Cards */
-    .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; max-width:1000px; margin:40px auto; }
-    .card { background:#111; padding:20px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.5); transition:transform .3s; }
-    .card:hover { transform:translateY(-8px); }
-    .card h3 { margin-bottom:10px; color:#fff; }
-    .card p { font-size:.9rem; color:#ccc; margin-bottom:15px; }
-
-    /* Footer */
-    footer { padding:30px 0; background:#0a0a0a; color:#555; font-size:.9rem; }
-  </style>
+  <title>DragonConfigs - Home</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- Preloader -->
   <div id="preloader"><div class="spinner"></div></div>
-
-  <!-- Header -->
-  <header>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#configs">Konfigi</a>
-      <a href="#download">Pobierz</a>
-      <a href="#contact">Kontakt</a>
-    </nav>
-    <h1 id="home">DragonConfigs</h1>
+  <nav>
+    <ul>
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="configs.html">Konfigi</a></li>
+      <li><a href="download.html">Pobierz</a></li>
+      <li><a href="contact.html">Kontakt</a></li>
+    </ul>
+  </nav>
+  <header class="hero">
+    <h1>DragonConfigs</h1>
+    <p>Twoje centrum cheat configs do Minecraft</p>
+    <a href="configs.html" class="button">Zobacz Konfigi</a>
   </header>
-
-  <!-- About -->
-  <section>
-    <h2 class="section-title">Witaj w DragonConfigs</h2>
-    <p>Odkryj najlepsze konfiguracje do cheatów Minecraft. Gotowe pliki, prosty download i wsparcie społeczności.</p>
+  <section class="about">
+    <h2>O nas</h2>
+    <p>DragonConfigs to społeczność tworząca i udostępniająca najlepsze konfiguracje cheatów do Minecrafta. Dołącz do nas!</p>
   </section>
-
-  <!-- Config list -->
-  <section id="configs">
-    <h2 class="section-title">Nasze Konfigi</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>Verus Legit</h3>
-        <p>Bezpieczne wspomaganie ruchu, anty-detekcja i smooth ruch.</p>
-        <button class="button" onclick="window.open('https://github.com/XxvoltikxX/DragonHacks-DragonConfigs/blob/main/verus-legit.xml')">Pobierz</button>
-      </div>
-      <div class="card">
-        <h3>Matrix Rage</h3>
-        <p>Agresywne funkcje, aimbot i ESP dla zaawansowanych.</p>
-        <button class="button" onclick="window.open('https://github.com/XxvoltikxX/DragonHacks-DragonConfigs/blob/main/matrix-rage.xml')">Pobierz</button>
-      </div>
-      <div class="card">
-        <h3>Vulcan Silent Aim</h3>
-        <p>Cichy aimbot z precyzyjnym predykcją i anti-recoil.</p>
-        <button class="button" onclick="window.open('https://github.com/XxvoltikxX/DragonHacks-DragonConfigs/blob/main/vulcan-silent.xml')">Pobierz</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Download Section -->
-  <section id="download">
-    <h2 class="section-title">Pobierz Cały Pakiet</h2>
-    <button class="button" onclick="window.open('https://github.com/XxvoltikxX/DragonHacks-DragonConfigs/archive/refs/heads/main.zip')">Download ZIP</button>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact">
-    <h2 class="section-title">Kontakt</h2>
-    <p>Dołącz do naszej społeczności:</p>
-    <button class="button" onclick="window.open('https://discord.gg/dragonconfigs')">Discord</button>
-  </section>
-
-  <!-- Footer -->
   <footer>
     &copy; 2025 DragonConfigs | Made by XxvoltikxX
   </footer>
-
-  <!-- Preloader Script -->
-  <script>
-    window.addEventListener('load', ()=>{
-      document.getElementById('preloader').style.display = 'none';
-    });
-  </script>
+  <script src="js/main.js"></script>
 </body>
 </html>
+
+--- configs.html ---
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DragonConfigs - Konfigi</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="preloader"><div class="spinner"></div></div>
+  <nav> ... <!-- same nav as index.html, change active class to Konfigi -->
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="configs.html" class="active">Konfigi</a></li>
+      <li><a href="download.html">Pobierz</a></li>
+      <li><a href="contact.html">Kontakt</a></li>
+    </ul>
+  </nav>
+  <section class="section-content">
+    <h2>Nasze Konfigi</h2>
+    <div class="cards">
+      <!-- individual cards -->
+      <div class="card">
+        <h3>Verus Legit</h3>
+        <p>Smooth ruch, minimalne wykrycie.</p>
+        <a href="configs/verus-legit.xml" class="button">Pobierz</a>
+      </div>
+      <div class="card">
+        <h3>Matrix Rage</h3>
+        <p>Agresywny aimbot i ESP.</p>
+        <a href="configs/matrix-rage.xml" class="button">Pobierz</a>
+      </div>
+      <div class="card">
+        <h3>Vulcan Silent Aim</h3>
+        <p>Cichy aimbot, anti-recoil.</p>
+        <a href="configs/vulcan-silent.xml" class="button">Pobierz</a>
+      </div>
+    </div>
+  </section>
+  <footer>
+    &copy; 2025 DragonConfigs
+  </footer>
+  <script src="js/main.js"></script>
+</body>
+</html>
+
+--- download.html ---
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DragonConfigs - Pobierz</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="preloader"><div class="spinner"></div></div>
+  <nav> ... <!-- nav, active Pobierz -->
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="configs.html">Konfigi</a></li>
+      <li><a href="download.html" class="active">Pobierz</a></li>
+      <li><a href="contact.html">Kontakt</a></li>
+    </ul>
+  </nav>
+  <section class="section-content">
+    <h2>Pobierz Cały Pakiet</h2>
+    <a href="https://github.com/XxvoltikxX/DragonHacks-DragonConfigs/archive/refs/heads/main.zip" class="button">Download ZIP</a>
+  </section>
+  <footer>
+    &copy; 2025 DragonConfigs
+  </footer>
+  <script src="js/main.js"></script>
+</body>
+</html>
+
+--- contact.html ---
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DragonConfigs - Kontakt</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="preloader"><div class="spinner"></div></div>
+  <nav> ... <!-- nav, active Kontakt -->
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="configs.html">Konfigi</a></li>
+      <li><a href="download.html">Pobierz</a></li>
+      <li><a href="contact.html" class="active">Kontakt</a></li>
+    </ul>
+  </nav>
+  <section class="section-content">
+    <h2>Kontakt</h2>
+    <p>Dołącz na Discord: <a href="https://discord.gg/dragonconfigs">dragonconfigs</a></p>
+    <p>Email: <a href="mailto:voltik@dragonconfigs.xyz">voltik@dragonconfigs.xyz</a></p>
+  </section>
+  <footer>
+    &copy; 2025 DragonConfigs
+  </footer>
+  <script src="js/main.js"></script>
+</body>
+</html>
+
+--- css/style.css ---
+/* Reset & base */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Orbitron',sans-serif; background:#050505; color:#fff; }
+a { text-decoration:none; }
+
+/* Preloader */
+#preloader { position:fixed; inset:0; background:#050505; display:flex; align-items:center; justify-content:center; z-index:9999; }
+.spinner { width:50px; height:50px; border:6px solid #111; border-top-color:#00ffd1; border-radius:50%; animation:spin 1s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg);} }
+
+/* Nav */
+nav { background:#111; padding:10px 0; }
+nav ul { display:flex; justify-content:center; gap:30px; list-style:none; }
+nav a { color:#fff; padding:8px 12px; transition:background .3s; }
+nav a.active, nav a:hover { background:#00ffd1; color:#050505; border-radius:4px; }
+
+/* Hero */
+.hero { height:80vh; background:url('https://i.imgur.com/3f6vS4W.jpg') center/cover no-repeat; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+.hero h1 { font-size:4rem; color:#00ffd1; text-shadow:0 0 10px #00ffd1; animation:glow 2s ease-in-out infinite alternate; }
+.hero p { margin:20px 0; font-size:1.2rem; color:#ccc; }
+.hero .button { margin-top:10px; }
+
+/* Sections */
+.section-content, .about { padding:60px 20px; text-align:center; }
+.section-content h2, .about h2 { font-size:2.5rem; margin-bottom:20px; color:#00ffd1; }
+.about p, .section-content p { color:#ccc; max-width:600px; margin:0 auto 20px; }
+
+/* Cards */
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; max-width:1000px; margin:0 auto; }
+.card { background:#1a1a1a; padding:20px; border-radius:8px; text-align:left; transition:transform .3s; }
+.card:hover { transform:translateY(-8px); }
+.card h3 { margin-bottom:10px; color:#fff; }
+.card p { font-size:.95rem; color:#ccc; margin-bottom:15px; }
+.card .button { display:inline-block; }
+
+/* Buttons */
+.button { display:inline-block; padding:12px 24px; background:#00ffd1; color:#050505; font-weight:700; border:none; border-radius:6px; cursor:pointer; transition:transform .3s, box-shadow .3s; }
+.button:hover { transform:scale(1.05); box-shadow:0 0 15px rgba(0,255,209,0.7); }
+
+/* Footer */
+footer { background:#0a0a0a; padding:30px 0; text-align:center; color:#555; }
+
+/* Glow animation */
+@keyframes glow { from { text-shadow:0 0 5px #00ffd1; } to { text-shadow:0 0 20px #00ffd1; }}
+
+--- js/main.js ---
+window.addEventListener('load', () => {
+  document.getElementById('preloader').style.display = 'none';
+});
