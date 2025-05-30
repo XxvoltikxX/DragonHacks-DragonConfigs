@@ -4,125 +4,15 @@
 ├─ index.html
 ├─ configs.html
 ├─ download.html
+├─ faq.html
+├─ about.html
 ├─ contact.html
 ├─ css/
 │  └─ style.css
 └─ js/
    └─ main.js
 
-Paste each into the respective file. */
-
---- css/style.css ---
-/* Reset & Base */
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Orbitron',sans-serif; background:#050505; color:#fff; overflow-x:hidden; padding-top:60px; }
-a { text-decoration:none; }
-
-/* Preloader */
-#preloader { position:fixed; inset:0; background:#050505; display:flex; align-items:center; justify-content:center; z-index:9999; }
-.spinner { width:50px; height:50px; border:6px solid #111; border-top-color:#00ffd1; border-radius:50%; animation:spin 1s linear infinite; }
-@keyframes spin { to { transform:rotate(360deg);} }
-
-/* Nav Panel */
-nav {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  background:rgba(10,10,10,0.85);
-  backdrop-filter:blur(8px);
-  box-shadow:0 2px 8px rgba(0,0,0,0.7);
-  z-index:1000;
-}
-nav ul {
-  display:flex;
-  justify-content:center;
-  gap:30px;
-  list-style:none;
-  padding:15px 0;
-}
-nav a {
-  position:relative;
-  color:#fff;
-  padding:8px 16px;
-  font-weight:700;
-  transition:color .3s;
-}
-nav a::after {
-  content:'';
-  position:absolute;
-  left:50%;
-  bottom:0;
-  width:0;
-  height:3px;
-  background:#00ffd1;
-  transition:width .3s ease, left .3s ease;
-}
-nav a:hover {
-  color:#00ffd1;
-}
-nav a:hover::after {
-  left:0;
-  width:100%;
-}
-nav a.active {
-  color:#00ffd1;
-}
-nav a.active::after {
-  left:0;
-  width:100%;
-}
-
-/* Page wrapper & transition */
-.page { position:relative; overflow:hidden; }
-.page-inner { transition:transform .5s ease, opacity .5s ease; transform: translateX(100%); opacity:0; }
-.page-enter-active .page-inner { transform: translateX(0); opacity:1; }
-.page-exit-active .page-inner { transform: translateX(-100%); opacity:0; }
-
-/* Hero */
-.hero { height:80vh; background:url('https://i.imgur.com/3f6vS4W.jpg') center/cover no-repeat; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
-.hero h1 { font-size:4rem; color:#00ffd1; text-shadow:0 0 10px #00ffd1; animation:glow 2s ease-in-out infinite alternate; }
-.hero p { margin:20px 0; font-size:1.2rem; color:#ccc; }
-.hero .button { margin-top:10px; }
-
-/* Sections */
-.section-content, .about { padding:80px 20px; text-align:center; }
-.section-content h2, .about h2 { font-size:2.5rem; margin-bottom:20px; color:#00ffd1; }
-.about p, .section-content p { color:#ccc; max-width:600px; margin:0 auto 20px; }
-
-/* Cards */
-.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; max-width:1000px; margin:0 auto 40px; }
-.card { background:#1a1a1a; padding:20px; border-radius:8px; text-align:left; transition:transform .3s; }
-.card:hover { transform:translateY(-8px); }
-.card h3 { margin-bottom:10px; color:#fff; }
-.card p { font-size:.95rem; color:#ccc; margin-bottom:15px; }
-.card .button { display:inline-block; }
-
-/* Buttons */
-.button { display:inline-block; padding:12px 24px; background:#00ffd1; color:#050505; font-weight:700; border:none; border-radius:6px; cursor:pointer; transition:transform .3s, box-shadow .3s; }
-.button:hover { transform:scale(1.05); box-shadow:0 0 15px rgba(0,255,209,0.7); }
-
-/* Footer */
-footer { background:#0a0a0a; padding:30px 0; text-align:center; color:#555; }
-
-/* Glow */
-@keyframes glow { from { text-shadow:0 0 5px #00ffd1; } to { text-shadow:0 0 20px #00ffd1; }}
-
---- js/main.js ---
-window.addEventListener('load', () => {
-  document.getElementById('preloader').style.display = 'none';
-  const page = document.getElementById('page');
-  page.classList.add('page-enter-active');
-  document.querySelectorAll('a[href$=".html"]').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      const href = link.getAttribute('href');
-      page.classList.remove('page-enter-active');
-      page.classList.add('page-exit-active');
-      setTimeout(() => window.location.href = href, 500);
-    });
-  });
-});
+Instructions: create files as below. */
 
 --- index.html ---
 <!DOCTYPE html>
@@ -136,29 +26,286 @@ window.addEventListener('load', () => {
 <body>
   <div id="preloader"><div class="spinner"></div></div>
   <nav>
-    <ul>
-      <li><a href="index.html" class="active">Strona Główna</a></li>
+    <ul class="nav-list">
+      <li><a href="index.html" class="active">Home</a></li>
       <li><a href="configs.html">Konfigi</a></li>
+      <li class="dropdown">
+        <a href="#">Więcej</a>
+        <ul class="dropdown-menu">
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="about.html">O nas</a></li>
+        </ul>
+      </li>
       <li><a href="download.html">Pobierz</a></li>
       <li><a href="contact.html">Kontakt</a></li>
     </ul>
   </nav>
+
   <div id="page" class="page">
     <div class="page-inner">
-      <header class="hero">
+      <header class="hero" id="home">
         <h1>DragonConfigs</h1>
-        <p>Twoje centrum cheat configs do Minecraft</p>
-        <a href="configs.html" class="button">Zobacz Konfigi</a>
+        <p>Najlepsze konfiguracje cheatów <br> dla Minecrafta</p>
+        <a href="configs.html" class="btn">Zobacz Konfigi</a>
       </header>
-      <section class="about">
-        <h2>O nas</h2>
-        <p>DragonConfigs to społeczność tworząca i udostępniająca najlepsze konfiguracje cheatów do Minecrafta. Dołącz do nas!</p>
+
+      <section id="features" class="section-content">
+        <h2 class="section-title">Dlaczego DragonConfigs?</h2>
+        <div class="features-grid">
+          <div class="feature-item">
+            <h3>Bezpieczeństwo</h3>
+            <p>Konfigi zoptymalizowane pod AntiCheat, minimalne ryzyko wykrycia.</p>
+          </div>
+          <div class="feature-item">
+            <h3>Różnorodność</h3>
+            <p>Legit, semi-rage, full-rage, silent aim, aimbot – wybór należy do Ciebie.</p>
+          </div>
+          <div class="feature-item">
+            <h3>Wsparcie</h3>
+            <p>Aktualizacje co tydzień, instrukcje instalacji i społeczność na Discord.</p>
+          </div>
+          <div class="feature-item">
+            <h3>Łatwy Download</h3>
+            <p>Pojedyncze pliki XML lub cały pakiet ZIP jednym kliknięciem.</p>
+          </div>
+        </div>
       </section>
+
+      <section id="testimonials" class="section-content alt">
+        <h2 class="section-title">Opinie Użytkowników</h2>
+        <div class="testimonials-grid">
+          <blockquote class="testimonial">
+            <p>„Najlepsze configi, od kiedy korzystam z DragonConfigs nie boję się grać na Verus!”</p>
+            <footer>- Gracz123</footer>
+          </blockquote>
+          <blockquote class="testimonial">
+            <p>„Łatwe w instalacji i super działają – pełna rekomendacja!”</p>
+            <footer>- PvPMaster</footer>
+          </blockquote>
+        </div>
+      </section>
+
+      <section id="cta" class="section-content">
+        <h2 class="section-title">Dołącz do naszej społeczności</h2>
+        <a href="https://discord.gg/dragonconfigs" class="btn">Dołącz na Discord</a>
+      </section>
+
       <footer>
-        &copy; 2025 DragonConfigs | Made by XxvoltikxX
+        <p>&copy; 2025 DragonConfigs | Made by XxvoltikxX</p>
       </footer>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
+
+--- configs.html ---
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DragonConfigs - Konfigi</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="preloader"><div class="spinner"></div></div>
+  <nav>... same nav markup ...</nav>
+  <div id="page" class="page">
+    <div class="page-inner">
+      <section class="section-content">
+        <h2 class="section-title">Lista Konfigów</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Verus Legit</h3>
+            <p>Ładny ruch, low detection.</p>
+            <a href="configs/verus-legit.xml" class="btn-small">Pobierz</a>
+          </div>
+          <div class="card">
+            <h3>Matrix Semi-Rage</h3>
+            <p>Balance pomiędzy siłą a bezpieczeństwem.</p>
+            <a href="configs/matrix-rage.xml" class="btn-small">Pobierz</a>
+          </div>
+          <div class="card">
+            <h3>Vulcan Silent Aim</h3>
+            <p>Cichy aimbot, precyzja i bez recoil.</p>
+            <a href="configs/vulcan-silent.xml" class="btn-small">Pobierz</a>
+          </div>
+          <!-- add more cards as needed -->
+        </div>
+      </section>
+      <footer>... same footer ...</footer>
     </div>
   </div>
   <script src="js/main.js"></script>
 </body>
 </html>
+
+--- download.html ---
+<!DOCTYPE html>
+<html lang="pl">
+... same head ...
+<body>
+  <div id="preloader"><div class="spinner"></div></div>
+  <nav>... nav ...</nav>
+  <div id="page" class="page">
+    <div class="page-inner">
+      <section class="section-content">
+        <h2 class="section-title">Pobierz Cały Pakiet</h2>
+        <a href="https://github.com/XxvoltikxX/DragonHacks-DragonConfigs/archive/refs/heads/main.zip" class="btn">Pobierz ZIP</a>
+      </section>
+      <footer>... footer ...</footer>
+    </div>
+  </div>
+  <script src="js/main.js"></script>
+</body>
+</html>
+
+--- faq.html ---
+<!DOCTYPE html>
+<html lang="pl">
+... same head ...
+<body>
+  <div id="preloader"><div class="spinner"></div></div>
+  <nav>... nav ...</nav>
+  <div id="page" class="page">
+    <div class="page-inner">
+      <section class="section-content">
+        <h2 class="section-title">FAQ</h2>
+        <div class="faq-item">
+          <h3>Jak zainstalować config?</h3>
+          <p>Wystarczy wrzucić plik XML do folderu configs Twojego klienta.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Co zrobić gdy wykryje mnie anticheat?</h3>
+          <p>Zmień config na legitowy i sprawdź ustawienia wykrywania.</p>
+        </div>
+      </section>
+      <footer>... footer ...</footer>
+    </div>
+  </div>
+  <script src="js/main.js"></script>
+</body>
+</html>
+
+--- about.html ---
+<!DOCTYPE html>
+<html lang="pl">
+... same head ...
+<body>
+  <div id="preloader"><div class="spinner"></div></div>
+  <nav>... nav ...</nav>
+  <div id="page" class="page">
+    <div class="page-inner">
+      <section class="about">
+        <h2 class="section-title">O nas</h2>
+        <p>DragonConfigs to projekt pasjonatów... [rozbuduj opis].</p>
+      </section>
+      <footer>... footer ...</footer>
+    </div>
+  </div>
+  <script src="js/main.js"></script>
+</body>
+</html>
+
+--- contact.html ---
+<!DOCTYPE html>
+<html lang="pl">
+... same head ...
+<body>
+  <div id="preloader"><div class="spinner"></div></div>
+  <nav>... nav ...</nav>
+  <div id="page" class="page">
+    <div class="page-inner">
+      <section class="section-content">
+        <h2 class="section-title">Kontakt</h2>
+        <p>Discord: <a href="https://discord.gg/dragonconfigs">dragonconfigs</a></p>
+        <p>Email: <a href="mailto:voltik@dragonconfigs.xyz">voltik@dragonconfigs.xyz</a></p>
+      </section>
+      <footer>... footer ...</footer>
+    </div>
+  </div>
+  <script src="js/main.js"></script>
+</body>
+</html>
+
+--- css/style.css ---
+/* Reset & Base */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Orbitron',sans-serif; background:#050505; color:#fff; overflow-x:hidden; padding-top:60px; }
+a { text-decoration:none; }
+
+/* Preloader */
+#preloader { position:fixed; inset:0; background:#050505; display:flex; align-items:center; justify-content:center; z-index:9999; }
+.spinner { width:50px; height:50px; border:6px solid #111; border-top-color:#00ffd1; border-radius:50%; animation:spin 1s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg);} }
+
+/* Nav Panel */
+nav { position:fixed; top:0; width:100%; background:rgba(10,10,10,0.85); backdrop-filter:blur(8px); box-shadow:0 2px 8px rgba(0,0,0,0.7); z-index:1000; }
+.nav-list, .dropdown-menu { list-style:none; padding:0; margin:0; display:flex; }
+.nav-list { justify-content:center; gap:30px; }
+.nav-list li { position:relative; }
+.nav-list a { display:block; padding:12px 16px; color:#fff; font-weight:700; transition:color .3s; }
+.nav-list a:hover, .nav-list a.active { color:#00ffd1; }
+.nav-list a:hover::after, .nav-list a.active::after { width:100%; left:0; }
+.nav-list a::after { content:''; position:absolute; bottom:4px; left:50%; width:0; height:3px; background:#00ffd1; transition:width .3s, left .3s; }
+.dropdown-menu { position:absolute; top:100%; left:0; flex-direction:column; background:#111; border-radius:4px; overflow:hidden; opacity:0; visibility:hidden; transition:opacity .3s; }
+.dropdown:hover .dropdown-menu { opacity:1; visibility:visible; }
+.dropdown-menu li { width:150px; }
+.dropdown-menu a { padding:10px; }
+
+/* Hero */
+.hero { height:80vh; background:url('https://i.imgur.com/3f6vS4W.jpg') center/cover no-repeat; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+.hero h1 { font-size:4rem; color:#00ffd1; text-shadow:0 0 10px #00ffd1; animation:glow 2s ease-in-out infinite alternate; }
+.hero p { margin:20px 0; font-size:1.2rem; color:#ccc; }
+.btn { padding:14px 32px; background:#00ffd1; color:#050505; font-weight:700; border:none; border-radius:6px; transition:transform .3s, box-shadow .3s; }
+.btn:hover { transform:scale(1.05); box-shadow:0 0 15px rgba(0,255,209,0.7); }
+
+/* Sections */
+.section-title { font-size:2.5rem; margin-bottom:20px; color:#00ffd1; text-align:center; }
+.section-content, .about { padding:80px 20px; text-align:center; }
+
+/* Features Grid */
+.features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; max-width:1000px; margin:0 auto 40px; }
+.feature-item { background:#1a1a1a; padding:20px; border-radius:8px; transition:transform .3s; }
+.feature-item:hover { transform:translateY(-8px); }
+.feature-item h3 { margin-bottom:10px; color:#fff; }
+.feature-item p { color:#ccc; }
+
+/* Testimonials */
+.alt { background:#111; }
+.testimonials-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px; max-width:900px; margin:0 auto 40px; }
+.testimonial { background:#1a1a1a; padding:20px; border-radius:8px; font-style:italic; position:relative; }
+.testimonial footer { margin-top:15px; text-align:right; color:#00ffd1; font-weight:700; }
+
+/* Cards on Konfigi */
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; max-width:1000px; margin:0 auto 40px; }
+.card { background:#1a1a1a; padding:20px; border-radius:8px; transition:transform .3s; text-align:left; }
+.card:hover { transform:translateY(-8px); }
+.card h3 { margin-bottom:10px; }
+.card p { color:#ccc; margin-bottom:15px; }
+.btn-small { padding:10px 20px; font-size:.9rem; }
+
+/* Footer */
+footer { background:#0a0a0a; padding:30px 0; text-align:center; color:#555; }
+
+/* Animations */
+@keyframes spin { to { transform:rotate(360deg);} }
+@keyframes glow { from { text-shadow:0 0 5px #00ffd1; } to { text-shadow:0 0 20px #00ffd1; }}
+
+--- js/main.js ---
+window.addEventListener('load', () => {
+  const pre = document.getElementById('preloader');
+  pre.style.display = 'none';
+  const page = document.getElementById('page');
+  page.classList.add('page-enter-active');
+  document.querySelectorAll('a[href$=".html"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('page').classList.remove('page-enter-active');
+      document.getElementById('page').classList.add('page-exit-active');
+      setTimeout(() => window.location.href = link.href, 500);
+    });
+  });
+});
