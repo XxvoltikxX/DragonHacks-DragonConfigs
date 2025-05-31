@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DragonConfigs - Home</title>
   <!-- Import fontu Poppins z Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="Style.css" />
 
   <style>
@@ -24,11 +24,11 @@
       height: 100%;
       overflow-x: hidden;
       font-family: 'Poppins', sans-serif;
-      background-color: #000; /* na wypadek, gdyby wideo się nie załadowało */
+      background-color: #000; /* w razie problemu z wideo */
     }
 
     /* ============================
-       Pasek nawigacyjny (nad wszystkim) – półprzezroczysty
+       Pasek nawigacyjny – półprzezroczysty
        ============================ */
     nav {
       position: fixed;
@@ -37,16 +37,14 @@
       width: 100%;
       height: 60px;
       line-height: 60px;
-      background-color: rgba(0, 0, 0, 0.8); /* półprzezroczyste czarne tło */
+      background-color: rgba(0, 0, 0, 0.8);
       border-bottom: 1px solid rgba(34, 34, 34, 0.8);
       display: flex;
       align-items: center;
       padding: 0 1rem;
       z-index: 4;
     }
-    /* ============================
-       Animowany napis „DragonConfigs” 
-       ============================ */
+    /* Animowany napis „DragonConfigs” */
     .nav-logo {
       font-size: 1.5rem;
       font-weight: 700;
@@ -66,15 +64,9 @@
       margin-right: 2rem;
     }
     @keyframes gradient-wave {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .nav-list {
@@ -101,7 +93,7 @@
       position: absolute;
       top: 100%;
       left: 0;
-      background-color: rgba(0, 0, 0, 0.8); /* półprzezroczyste czarne tło */
+      background-color: rgba(0, 0, 0, 0.8);
       border: 1px solid rgba(34, 34, 34, 0.8);
       border-radius: 4px;
       list-style: none;
@@ -130,12 +122,12 @@
        ============================ */
     #fireCanvas {
       position: fixed;
-      top: 60px;                      /* start tuż pod navbarem */
+      top: 60px; 
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
       pointer-events: none;
-      z-index: 1;                      /* nad wideo, pod hero */
+      z-index: 1;
     }
 
     /* ============================
@@ -143,11 +135,11 @@
        ============================ */
     .video-background {
       position: fixed;
-      top: 60px;                      /* start pod navbarem */
+      top: 60px; 
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
-      z-index: 0;                      /* najniżej */
+      z-index: 0;
       overflow: hidden;
       pointer-events: none;
     }
@@ -167,19 +159,18 @@
        ============================ */
     header.hero {
       position: absolute;
-      top: 60px;                      /* zaczyna się tuż pod navbarem */
+      top: 60px; 
       left: 0;
       width: 100vw;
-      height: calc(100vh - 60px);     /* pełna wysokość pod navbarem */
+      height: calc(100vh - 60px);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
       color: #fff;
-      z-index: 2;                      /* nad canvas i wideo */
+      z-index: 2;
     }
-    /* Typing animation container */
     .typewriter-container {
       display: flex;
       align-items: center;
@@ -188,7 +179,6 @@
       font-weight: 700;
       height: auto;
     }
-    /* Tekst, który jest wpisywany z wielokolorowym gradientem i szybszą animacją */
     #typed-text {
       background: linear-gradient(
         45deg,
@@ -204,7 +194,6 @@
       animation: gradient-wave 1.5s ease-in-out infinite;
       text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
     }
-    /* Migający kursor */
     #cursor {
       display: inline-block;
       margin-left: 4px;
@@ -216,29 +205,27 @@
     @keyframes blink {
       50% { opacity: 0; }
     }
-    /* Podtytuł poniżej nagłówka */
     header.hero p {
       font-size: 1.5rem;
       margin: 1rem 0 2rem;
       color: #f0f0f0;
       text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.7);
     }
-    /* Przycisk całkowicie przezroczysty, widoczny tylko tekst */
     header.hero .btn {
       display: inline-block;
       padding: 0.85rem 1.75rem;
-      background-color: transparent; /* brak wypełnienia */
-      border: none;                  /* brak obramowania */
-      color: #ffffff;                /* biały tekst */
+      background-color: transparent;
+      border: none;
+      color: #ffffff;
       text-decoration: none;
       font-size: 1rem;
       font-weight: 500;
       transition: color 0.2s ease, transform 0.2s ease;
       text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.8);
-      border-radius: 20px;           /* lekkie zaokrąglenie */
+      border-radius: 20px;
     }
     header.hero .btn:hover {
-      color: #00ffc2;               /* zmiana koloru tekstu przy hover */
+      color: #00ffc2;
       transform: translateY(-2px);
     }
 
@@ -266,10 +253,10 @@
   <!-- Canvas dla unoszących się pyłków -->
   <canvas id="fireCanvas"></canvas>
 
-  <!-- Pełnoekranowe wideo z YouTube jako tło (rozmyte, z dźwiękiem) -->
+  <!-- Pełnoekranowe wideo z YouTube jako tło (rozmyte, rozpoczęte w trybie muted) -->
   <div class="video-background">
     <iframe
-      src="https://www.youtube.com/embed/PD8RH_c7Kvk?start=19&autoplay=1&controls=1&loop=1&playlist=PD8RH_c7Kvk"
+      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=19&autoplay=1&mute=1&controls=1&loop=1&playlist=PD8RH_c7Kvk"
       allow="autoplay; encrypted-media; fullscreen"
       allowfullscreen
     ></iframe>
@@ -435,7 +422,7 @@
         }
       }
 
-      // Startujemy animację po krótkim opóźnieniu
+      // Start animacji po krótkim opóźnieniu
       setTimeout(type, newTextDelay);
     });
   </script>
