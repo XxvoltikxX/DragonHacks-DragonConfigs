@@ -39,7 +39,7 @@
     }
 
     /* ============================
-       NAVBAR (czarny, stały na górze)
+       NAVBAR (stały, zawsze na górze)
        ============================ */
     nav {
       position: fixed;
@@ -50,9 +50,9 @@
       background-color: #000;
       border-bottom: 1px solid #222;
       display: flex;
-      align-items: center;
+      align-items: center;    /* centrum pionowe */
       padding: 0 1rem;
-      z-index: 100;
+      z-index: 1000;          /* ponad wideo i hero */
     }
     .nav-logo {
       font-size: 1.5rem;
@@ -72,25 +72,28 @@
       letter-spacing: 1px;
     }
     @keyframes gradient-wave {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
     .nav-menu {
       display: flex;
       gap: 1.5rem;
-      margin-left: auto;
-      align-items: center;
+      margin-left: auto;      /* wypycha menu na prawo */
+      align-items: center;    /* centrum pionowe */
+      height: 100%;
     }
     .nav-menu li {
       position: relative;
+      height: 100%;
     }
     .nav-menu a {
-      padding: 0.5rem 0.75rem;
+      display: inline-block;
+      line-height: 60px;      /* wyrównanie w pionie */
+      padding: 0 0.5rem;
       font-size: 1rem;
       color: #e0e0e0;
       transition: color 0.2s ease;
-      display: block;
     }
     .nav-menu a:hover {
       color: #00ffc2;
@@ -101,7 +104,7 @@
     .nav-menu .active > a::after {
       content: "";
       position: absolute;
-      bottom: -4px;
+      bottom: 8px;
       left: 0;
       width: 100%;
       height: 2px;
@@ -109,40 +112,12 @@
       border-radius: 2px;
     }
 
-    /* DROPDOWN (opcjonalnie, jeśli potrzebujesz) */
-    .dropdown:hover .dropdown-menu {
-      display: block;
-    }
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background-color: #000;
-      border: 1px solid #222;
-      border-radius: 4px;
-      min-width: 200px;
-      padding: 0.5rem 0;
-      z-index: 200;
-    }
-    .dropdown-menu a {
-      display: block;
-      padding: 0.4rem 1rem;
-      white-space: nowrap;
-      color: #e0e0e0;
-      transition: background-color 0.2s ease;
-    }
-    .dropdown-menu a:hover {
-      background-color: #222;
-      color: #00ffc2;
-    }
-
     /* ============================
-       TŁO WIDEO (pojawia się pod navbarem)
+       TŁO WIDEO (dryfujące pod navbarem i hero)
        ============================ */
     .video-background {
       position: fixed;
-      top: 60px; /* zaraz pod NAVBAR-em */
+      top: 60px; /* od razu pod navbar’em */
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
@@ -162,11 +137,11 @@
     }
 
     /* ============================
-       SEKCJA HERO (tekst + przycisk na środku ekranu)
+       SEKCJA HERO (tekst + przycisk wyśrodkowany)
        ============================ */
     header.hero {
       position: absolute;
-      top: 60px; /* poniżej navbaru */
+      top: 60px; /* pod navbar’em */
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
@@ -175,12 +150,12 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      z-index: 1; /* nad wideo */
+      z-index: 10; /* nad wideo */
       color: #ffffff;
       padding: 0 1rem;
     }
     header.hero h1 {
-      font-size: 2.5rem;
+      font-size: 2.75rem;
       margin-bottom: 1rem;
       text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
     }
@@ -195,7 +170,7 @@
       background-color: #00ffc2;
       color: #000;
       border-radius: 4px;
-      font-weight: bold;
+      font-weight: 700;
       transition: background-color 0.2s ease, transform 0.2s ease;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     }
@@ -208,7 +183,7 @@
        ZAWARTOŚĆ PO HERO (po przewinięciu)
        ============================ */
     .after-video {
-      margin-top: 100vh; /* przesuwa wszystko pod cały hero */
+      margin-top: 100vh; /* wysuwa wszystko pod cały hero */
     }
     .about-section {
       padding: 3rem 1rem;
@@ -261,23 +236,23 @@
     </div>
   </nav>
 
-  <!-- TŁO WIDEO (YouTube przez HTTPS, bez mute) -->
+  <!-- TŁO WIDEO (YouTube przez HTTPS z rozmyciem) -->
   <div class="video-background">
     <iframe
-      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=19&autoplay=1&controls=1&loop=1&playlist=PD8RH_c7Kvk"
+      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=19&autoplay=1&controls=1&loop=1&playlist=PD8RH_c7Kvk&mute=1"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen
     ></iframe>
   </div>
 
-  <!-- SEKCJA HERO (tekst + przycisk) -->
+  <!-- HERO (tekst + przycisk wycentrowany nad wideo) -->
   <header class="hero">
     <h1>DragonConfigs</h1>
     <p>Twoje centrum cheatów i configów do Minecrafta</p>
     <a href="#AllMC" class="btn">Zobacz Configi</a>
   </header>
 
-  <!-- PO HERO: treść, która pojawia się po przewinięciu -->
+  <!-- SZCZEGÓŁY PO HERO (po przewinięciu) -->
   <div class="after-video">
     <section id="AllMC" class="about-section">
       <h2>O nas</h2>
