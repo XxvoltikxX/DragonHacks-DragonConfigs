@@ -70,6 +70,7 @@
       50%  { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
+
     .nav-list {
       display: flex;
       list-style: none;
@@ -134,7 +135,8 @@
 
     /* ===========================================
        TŁO WIDEO Z YOUTUBE (Z ROZMYCIEM)
-       =========================================== */
+       ===========================================
+    */
     .video-background {
       position: fixed;
       top: 60px;                   /* zaraz pod navbarem */
@@ -143,7 +145,6 @@
       height: calc(100vh - 60px);
       z-index: 0;                  /* najniżej */
       overflow: hidden;
-      pointer-events: none;
     }
     .video-background iframe {
       position: absolute;
@@ -155,21 +156,11 @@
       filter: blur(8px);
       transform: translate(0, 0) scale(1.1);
     }
-    /* Przezroczysty overlay, który łapie pierwszy kliknięcie, by odciszyć dźwięk */
-    #click-overlay {
-      position: fixed;
-      top: 60px;
-      left: 0;
-      width: 100vw;
-      height: calc(100vh - 60px);
-      z-index: 3;
-      cursor: pointer;
-      background-color: rgba(0,0,0,0); /* w pełni przezroczysty */
-    }
 
     /* ===========================================
        HERO (NAPIS + PRZYCISK NA ŚRODKU EKRANU)
-       =========================================== */
+       ===========================================
+    */
     header.hero {
       position: absolute;
       top: 60px;                   /* start pod navbarem */
@@ -182,7 +173,7 @@
       align-items: center;
       text-align: center;
       color: #fff;
-      z-index: 5;                  /* nad overlayem i navbarem */
+      z-index: 5;                  /* nad wideo i canvasem */
     }
     .typewriter-container {
       display: flex;
@@ -244,7 +235,8 @@
 
     /* ===========================================
        STOPKA
-       =========================================== */
+       ===========================================
+    */
     footer {
       padding: 1.5rem 1rem;
       background-color: #111;
@@ -266,20 +258,17 @@
   <!-- 1) CANVAS dla unoszących się pyłków -->
   <canvas id="fireCanvas"></canvas>
 
-  <!-- 2) PEŁNOEKRANOWE WIDEO Z YOUTUBE (rozmyte, MUTE na starcie + JS API) -->
+  <!-- 2) PEŁNOEKRANOWE WIDEO Z YOUTUBE (z usuniętym `mute=1`) -->
   <div class="video-background">
     <iframe
       id="bg-video"
-      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=28&autoplay=1&mute=1&controls=1&loop=1&playlist=PD8RH_c7Kvk&enablejsapi=1"
+      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=28&autoplay=1&controls=1&loop=1&playlist=PD8RH_c7Kvk"
       allow="autoplay; encrypted-media; fullscreen"
       allowfullscreen
     ></iframe>
   </div>
 
-  <!-- 3) OVERLAY, który po pierwszym kliknięciu odcisza wideo -->
-  <div id="click-overlay"></div>
-
-  <!-- 4) PASEK NAWIGACYJNY NA GÓRZE -->
+  <!-- 3) PASEK NAWIGACYJNY NA GÓRZE -->
   <nav>
     <a href="index.html" class="nav-logo">DragonConfigs</a>
     <ul class="nav-list">
@@ -297,7 +286,7 @@
     </ul>
   </nav>
 
-  <!-- 5) HERO: NAPIS + PRZYCISK NA ŚRODKU -->
+  <!-- 4) HERO: NAPIS + PRZYCISK NA ŚRODKU -->
   <header class="hero">
     <div class="typewriter-container">
       <span id="typed-text"></span><span id="cursor">|</span>
@@ -306,39 +295,17 @@
     <a href="Configi.html" class="btn">Zobacz Configi</a>
   </header>
 
-  <!-- 6) STOPKA -->
+  <!-- 5) STOPKA -->
   <footer>
     <p>&copy; 2025 DragonConfigs | Made by XxvoltikxX</p>
     <p><a href="https://minecraft.net" target="_blank" rel="noopener">Oficjalna strona Minecraft</a></p>
   </footer>
 
-  <!-- 7) YOUTUBE IFRAME API (wymagane, by za pierwszym kliknięciem odciszyć wideo) -->
-  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
-    let player;
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('bg-video', {
-        events: {
-          'onReady': () => {
-            // Wideo jest wczytane w trybie MUTE (mute=1 w URL). Nie robimy nic więcej.
-          }
-        }
-      });
-    }
-
+    // ==============================================
+    // 1) Unoszące się pyłki (FLOATING DUST)
+    // ==============================================
     document.addEventListener('DOMContentLoaded', () => {
-      // 1) Click‐overlay:
-      const overlay = document.getElementById('click-overlay');
-      overlay.addEventListener('click', () => {
-        if (player && typeof player.unMute === 'function') {
-          player.unMute();        // odcisza wideo
-          player.playVideo();     // upewnia się, że odtwarzanie gra
-        }
-        // Usuwamy sam overlay, żeby nie przeszkadzał
-        overlay.parentNode.removeChild(overlay);
-      });
-
-      // 2) Unoszące się pyłki (FIRE PARTICLES):
       const canvas = document.getElementById('fireCanvas');
       const ctx = canvas.getContext('2d');
       let particles = [];
@@ -413,8 +380,12 @@
         requestAnimationFrame(animateParticles);
       }
       animateParticles();
+    });
 
-      // 3) Efekt pisania (typer) w HERO:
+    // ==============================================
+    // 2) Efekt pisania (TYPEWRITER) w HERO
+    // ==============================================
+    document.addEventListener('DOMContentLoaded', () => {
       const typedTextSpan = document.getElementById('typed-text');
       const cursorSpan = document.getElementById('cursor');
       const textToType = 'Witaj na stronie DragonConfigs';
