@@ -118,10 +118,8 @@
     }
 
     /* ===========================================
-       CANVAS: UNOSZĄCE SIĘ PYŁKI (FIRECORES)
-       ===========================================
-       - Będzie nad wideo, ale pod hero i navbarem.
-    */
+       CANVAS: unoszące się pyłki (Floating Dust)
+       =========================================== */
     #fireCanvas {
       position: fixed;
       top: 60px;                  /* zaraz pod navbarem */
@@ -129,21 +127,20 @@
       width: 100vw;
       height: calc(100vh - 60px);
       pointer-events: none;
-      z-index: 2;
+      z-index: 2;                 /* nad wideo, pod hero */
     }
 
     /* ===========================================
-       TŁO WIDEO Z YOUTUBE (Z ROZMYCIEM)
+       WIDEO W TLE (YT) – próbujemy bez wstępnego mute
        =========================================== */
     .video-background {
       position: fixed;
-      top: 60px;                   /* zaraz pod navbarem */
+      top: 60px;                  /* zaraz pod navbarem */
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
-      z-index: 0;                  /* najniżej */
+      z-index: 0;                 /* najniżej */
       overflow: hidden;
-      pointer-events: none;
     }
     .video-background iframe {
       position: absolute;
@@ -155,7 +152,10 @@
       filter: blur(8px);
       transform: translate(0, 0) scale(1.1);
     }
-    /* Przezroczysty overlay, który łapie pierwszy kliknięcie, by odciszyć dźwięk */
+
+    /* ===========================================
+       Transparentny overlay, żeby złapać pierwszy klik (unMute)
+       =========================================== */
     #click-overlay {
       position: fixed;
       top: 60px;
@@ -168,7 +168,7 @@
     }
 
     /* ===========================================
-       HERO (NAPIS + PRZYCISK NA ŚRODKU EKRANU)
+       HERO (NAPIS + PRZYCISK NA ŚRODKU)
        =========================================== */
     header.hero {
       position: absolute;
@@ -262,21 +262,22 @@
     }
   </style>
 </head>
+
 <body>
   <!-- 1) CANVAS dla unoszących się pyłków -->
   <canvas id="fireCanvas"></canvas>
 
-  <!-- 2) PEŁNOEKRANOWE WIDEO Z YOUTUBE (rozmyte, MUTE na starcie + JS API) -->
+  <!-- 2) WIDEO Z YOUTUBE (bez mute=1, z autoplay=1 & enablejsapi=1) -->
   <div class="video-background">
     <iframe
       id="bg-video"
-      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=28&autoplay=1&mute=1&controls=1&loop=1&playlist=PD8RH_c7Kvk&enablejsapi=1"
+      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=28&autoplay=1&controls=1&loop=1&playlist=PD8RH_c7Kvk&enablejsapi=1"
       allow="autoplay; encrypted-media; fullscreen"
       allowfullscreen
     ></iframe>
   </div>
 
-  <!-- 3) OVERLAY, który po pierwszym kliknięciu odcisza wideo -->
+  <!-- 3) OVERLAY, który po pierwszym kliknięciu spróbuje odciszyć wideo -->
   <div id="click-overlay"></div>
 
   <!-- 4) PASEK NAWIGACYJNY NA GÓRZE -->
@@ -312,7 +313,7 @@
     <p><a href="https://minecraft.net" target="_blank" rel="noopener">Oficjalna strona Minecraft</a></p>
   </footer>
 
-  <!-- 7) YOUTUBE IFRAME API (wymagane, by za pierwszym kliknięciem odciszyć wideo) -->
+  <!-- 7) YOUTUBE IFRAME API (wymagane, by próbować unMute po pierwszym kliknięciu) -->
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
     let player;
@@ -320,25 +321,25 @@
       player = new YT.Player('bg-video', {
         events: {
           'onReady': () => {
-            // Wideo jest wczytane w trybie MUTE (mute=1 w URL). Nie robimy nic więcej.
+            // Film jest wczytany – próbujemy autostartu z dźwiękiem.
           }
         }
       });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // 1) Click‐overlay:
+      // 1) Kliknięcie na overlay: próbujemy odciszyć wideo
       const overlay = document.getElementById('click-overlay');
       overlay.addEventListener('click', () => {
         if (player && typeof player.unMute === 'function') {
-          player.unMute();        // odcisza wideo
-          player.playVideo();     // upewnia się, że odtwarzanie gra
+          player.unMute();    // próbujemy odciszyć wideo
+          player.playVideo(); // w razie potrzeby wznowić odtwarzanie
         }
-        // Usuwamy sam overlay, żeby nie przeszkadzał
+        // Usuwamy overlay, aby nie blokował interakcji w przyszłości:
         overlay.parentNode.removeChild(overlay);
       });
 
-      // 2) Unoszące się pyłki (FIRE PARTICLES):
+      // 2) Animacja unoszących się pyłków
       const canvas = document.getElementById('fireCanvas');
       const ctx = canvas.getContext('2d');
       let particles = [];
@@ -414,7 +415,7 @@
       }
       animateParticles();
 
-      // 3) Efekt pisania (typer) w HERO:
+      // 3) Efekt pisania (TYPEWRITER) w HERO:
       const typedTextSpan = document.getElementById('typed-text');
       const cursorSpan = document.getElementById('cursor');
       const textToType = 'Witaj na stronie DragonConfigs';
