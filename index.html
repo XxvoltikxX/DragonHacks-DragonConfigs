@@ -2,20 +2,17 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DragonConfigs – Home</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DragonConfigs - Home</title>
   <!-- Import fontu Poppins z Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
-    rel="stylesheet"
-  />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Style.css" />
 
   <style>
     /* ============================
-       RESET I PODSTAWOWA STRUKTURA
+       Reset i podstawowa struktura
        ============================ */
     * {
       margin: 0;
@@ -26,20 +23,12 @@
       width: 100%;
       height: 100%;
       overflow-x: hidden;
-      font-family: "Poppins", sans-serif;
-      background-color: #000;
-      color: #fff;
-    }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-    ul {
-      list-style: none;
+      font-family: 'Poppins', sans-serif;
+      background-color: #000; /* na wypadek, gdyby wideo się nie załadowało */
     }
 
     /* ============================
-       NAVBAR (stały, zawsze na górze)
+       Pasek nawigacyjny (nad wszystkim) – półprzezroczysty
        ============================ */
     nav {
       position: fixed;
@@ -47,13 +36,17 @@
       left: 0;
       width: 100%;
       height: 60px;
-      background-color: #000;
-      border-bottom: 1px solid #222;
+      line-height: 60px;
+      background-color: rgba(0, 0, 0, 0.8); /* półprzezroczyste czarne tło */
+      border-bottom: 1px solid rgba(34, 34, 34, 0.8);
       display: flex;
-      align-items: center;    /* centrum pionowe */
+      align-items: center;
       padding: 0 1rem;
-      z-index: 1000;          /* ponad wideo i hero */
+      z-index: 4;
     }
+    /* ============================
+       Animowany napis „DragonConfigs” 
+       ============================ */
     .nav-logo {
       font-size: 1.5rem;
       font-weight: 700;
@@ -69,152 +62,200 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       animation: gradient-wave 1.5s ease-in-out infinite;
-      letter-spacing: 1px;
+      text-decoration: none;
+      margin-right: 2rem;
     }
     @keyframes gradient-wave {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
-    .nav-menu {
+
+    .nav-list {
       display: flex;
+      list-style: none;
       gap: 1.5rem;
-      margin-left: auto;      /* wypycha menu na prawo */
-      align-items: center;    /* centrum pionowe */
-      height: 100%;
     }
-    .nav-menu li {
+    .nav-list li {
       position: relative;
-      height: 100%;
     }
-    .nav-menu a {
-      display: inline-block;
-      line-height: 60px;      /* wyrównanie w pionie */
-      padding: 0 0.5rem;
-      font-size: 1rem;
+    .nav-list a {
       color: #e0e0e0;
+      text-decoration: none;
+      font-size: 1rem;
       transition: color 0.2s ease;
     }
-    .nav-menu a:hover {
+    .nav-list a:hover,
+    .nav-list .active > a {
       color: #00ffc2;
     }
-    .nav-menu .active > a {
-      color: #00ffc2;
-    }
-    .nav-menu .active > a::after {
-      content: "";
+    /* Półprzezroczyste tło dropdownu */
+    .dropdown-menu {
+      display: none;
       position: absolute;
-      bottom: 8px;
+      top: 100%;
       left: 0;
-      width: 100%;
-      height: 2px;
-      background-color: #00ffc2;
-      border-radius: 2px;
+      background-color: rgba(0, 0, 0, 0.8); /* półprzezroczyste czarne tło */
+      border: 1px solid rgba(34, 34, 34, 0.8);
+      border-radius: 4px;
+      list-style: none;
+      padding: 0.5rem 0;
+      z-index: 5;
+    }
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+    .dropdown-menu li {
+      margin: 0;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 0.4rem 1rem;
+      white-space: nowrap;
+      color: #e0e0e0;
+    }
+    .dropdown-menu a:hover {
+      background-color: rgba(34, 34, 34, 0.8);
+      color: #00ffc2;
     }
 
     /* ============================
-       TŁO WIDEO (dryfujące pod navbarem i hero)
+       Canvas z unoszącymi się pyłkami
+       ============================ */
+    #fireCanvas {
+      position: fixed;
+      top: 60px;                      /* start tuż pod navbarem */
+      left: 0;
+      width: 100vw;
+      height: calc(100vh - 60px);
+      pointer-events: none;
+      z-index: 1;                      /* nad wideo, pod hero */
+    }
+
+    /* ============================
+       Kontener iframe (tło wideo) z rozmyciem
        ============================ */
     .video-background {
       position: fixed;
-      top: 60px; /* od razu pod navbar’em */
+      top: 60px;                      /* start pod navbarem */
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
+      z-index: 0;                      /* najniżej */
       overflow: hidden;
-      z-index: 0;
+      pointer-events: none;
     }
     .video-background iframe {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      width: auto;
-      height: auto;
-      min-width: 100vw;
-      min-height: 100vh;
-      transform: translate(-50%, -50%) scale(1.1);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
       filter: blur(8px);
+      transform: translate(0, 0) scale(1.1);
     }
 
     /* ============================
-       SEKCJA HERO (tekst + przycisk wyśrodkowany)
+       Hero (tekst + przycisk na środku ekranu)
        ============================ */
     header.hero {
       position: absolute;
-      top: 60px; /* pod navbar’em */
+      top: 60px;                      /* zaczyna się tuż pod navbarem */
       left: 0;
       width: 100vw;
-      height: calc(100vh - 60px);
+      height: calc(100vh - 60px);     /* pełna wysokość pod navbarem */
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      z-index: 10; /* nad wideo */
+      color: #fff;
+      z-index: 2;                      /* nad canvas i wideo */
+    }
+    /* Typing animation container */
+    .typewriter-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      height: auto;
+    }
+    /* Tekst, który jest wpisywany z wielokolorowym gradientem i szybszą animacją */
+    #typed-text {
+      background: linear-gradient(
+        45deg,
+        #07c9b9 0%,
+        #00bfff 25%,
+        #ff00ff 50%,
+        #ff0055 75%,
+        #ffee00 100%
+      );
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradient-wave 1.5s ease-in-out infinite;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+    }
+    /* Migający kursor */
+    #cursor {
+      display: inline-block;
+      margin-left: 4px;
+      font-size: 2.5rem;
+      font-weight: 700;
       color: #ffffff;
-      padding: 0 1rem;
+      animation: blink 0.7s step-start infinite;
     }
-    header.hero h1 {
-      font-size: 2.75rem;
-      margin-bottom: 1rem;
-      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    @keyframes blink {
+      50% { opacity: 0; }
     }
+    /* Podtytuł poniżej nagłówka */
     header.hero p {
-      font-size: 1.25rem;
-      margin-bottom: 2rem;
-      text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.7);
+      font-size: 1.5rem;
+      margin: 1rem 0 2rem;
+      color: #f0f0f0;
+      text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.7);
     }
+    /* Przycisk całkowicie przezroczysty, widoczny tylko tekst */
     header.hero .btn {
       display: inline-block;
-      padding: 0.75rem 1.5rem;
-      background-color: #00ffc2;
-      color: #000;
-      border-radius: 4px;
-      font-weight: 700;
-      transition: background-color 0.2s ease, transform 0.2s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      padding: 0.85rem 1.75rem;
+      background-color: transparent; /* brak wypełnienia */
+      border: none;                  /* brak obramowania */
+      color: #ffffff;                /* biały tekst */
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: color 0.2s ease, transform 0.2s ease;
+      text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.8);
+      border-radius: 20px;           /* lekkie zaokrąglenie */
     }
     header.hero .btn:hover {
-      background-color: #00e4b0;
+      color: #00ffc2;               /* zmiana koloru tekstu przy hover */
       transform: translateY(-2px);
     }
 
     /* ============================
-       ZAWARTOŚĆ PO HERO (po przewinięciu)
-       ============================ */
-    .after-video {
-      margin-top: 100vh; /* wysuwa wszystko pod cały hero */
-    }
-    .about-section {
-      padding: 3rem 1rem;
-      background-color: #111;
-      color: #ccc;
-      text-align: center;
-    }
-    .about-section h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #00ffc2;
-    }
-    .about-section p {
-      max-width: 800px;
-      margin: 0 auto;
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-
-    /* ============================
-       STOPKA
+       Stopka
        ============================ */
     footer {
       padding: 1.5rem 1rem;
-      background-color: #000;
-      color: #777;
+      background-color: #111;
+      color: #aaa;
       text-align: center;
       font-size: 0.9rem;
+      margin-top: calc(100vh + 60px);
     }
     footer a {
       color: #00ffc2;
+      text-decoration: none;
     }
     footer a:hover {
       text-decoration: underline;
@@ -222,50 +263,185 @@
   </style>
 </head>
 <body>
-  <!-- NAVBAR -->
-  <nav>
-    <div class="nav-container">
-      <a href="index.html" class="nav-logo">DragonConfigs</a>
-      <ul class="nav-menu">
-        <li class="active"><a href="index.html">Strona Główna</a></li>
-        <li><a href="#AllMC">Wszystko MC</a></li>
-        <li><a href="faq.html">Więcej</a></li>
-        <li><a href="download.html">Pobierz</a></li>
-        <li><a href="https://discord.gg/pTXQpWgfaE" target="_blank">Kontakt</a></li>
-      </ul>
-    </div>
-  </nav>
+  <!-- Canvas dla unoszących się pyłków -->
+  <canvas id="fireCanvas"></canvas>
 
-  <!-- TŁO WIDEO (YouTube przez HTTPS z rozmyciem) -->
+  <!-- Pełnoekranowe wideo z YouTube jako tło (rozmyte, z dźwiękiem) -->
   <div class="video-background">
+    <!-- 
+      Usunięto "&mute=1" i dodano "controls=1", aby wideo odtwarzało się z dźwiękiem
+      oraz aby użytkownik miał widoczne kontrolki (play/pause).
+    -->
     <iframe
-      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=19&autoplay=1&controls=1&loop=1&playlist=PD8RH_c7Kvk&mute=1"
+      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=19&autoplay=1&controls=1&loop=1&playlist=PD8RH_c7Kvk"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen
     ></iframe>
   </div>
 
-  <!-- HERO (tekst + przycisk wycentrowany nad wideo) -->
+  <!-- Pasek nawigacyjny (półprzezroczyste tło) -->
+  <nav>
+    <a href="index.html" class="nav-logo">DragonConfigs</a>
+    <ul class="nav-list">
+      <li class="active"><a href="index.html">Strona Główna</a></li>
+      <li><a href="Configi.html">Wszystko MC</a></li>
+      <li class="dropdown">
+        <a href="#">Więcej</a>
+        <ul class="dropdown-menu">
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="about.html">O nas</a></li>
+        </ul>
+      </li>
+      <li><a href="download.html">Pobierz</a></li>
+      <li><a href="https://discord.gg/pTXQpWgfaE" target="_blank">Kontakt</a></li>
+    </ul>
+  </nav>
+
+  <!-- Główna zawartość: hero z animacją pisania i szybszym gradientem -->
   <header class="hero">
-    <h1>DragonConfigs</h1>
+    <div class="typewriter-container">
+      <span id="typed-text"></span><span id="cursor">|</span>
+    </div>
     <p>Twoje centrum cheatów i configów do Minecrafta</p>
-    <a href="#AllMC" class="btn">Zobacz Configi</a>
+    <a href="Configi.html" class="btn">Zobacz Configi</a>
   </header>
 
-  <!-- SZCZEGÓŁY PO HERO (po przewinięciu) -->
-  <div class="after-video">
-    <section id="AllMC" class="about-section">
-      <h2>O nas</h2>
-      <p>
-        DragonConfigs to społeczność tworząca i udostępniająca najlepsze konfiguracje cheatów do Minecrafta. 
-        Dołącz do nas na Discord, pobieraj gotowe pliki i bądź zawsze o krok przed anty-cheatem.
-      </p>
-    </section>
+  <!-- Stopka -->
+  <footer>
+    <p>&copy; 2025 DragonConfigs | Made by XxvoltikxX</p>
+    <p><a href="https://minecraft.net" target="_blank" rel="noopener">Oficjalna strona Minecraft</a></p>
+  </footer>
 
-    <footer>
-      &copy; 2025 DragonConfigs | Made by XxvoltikxX &mdash; 
-      <a href="https://minecraft.net" target="_blank" rel="noopener">Oficjalna strona Minecraft</a>
-    </footer>
-  </div>
+  <!-- Skrypt: animacja unoszących się pyłków i animacja typu „maszynopis” -->
+  <script>
+    // ================================
+    // 1) Unoszące się pyłki (Floating Dust)
+    // ================================
+    (() => {
+      const canvas = document.getElementById('fireCanvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      const MAX_PARTICLES = 120;
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight - 60; // odliczamy wysokość navbaru
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      function randBetween(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      class Particle {
+        constructor() {
+          this.x = randBetween(0, canvas.width);
+          this.y = randBetween(0, canvas.height);
+          this.velocityY = randBetween(-0.3, -1.0);
+          this.velocityX = randBetween(-0.2, 0.2);
+          this.size = randBetween(1, 3);
+          this.alpha = randBetween(0.1, 0.3);
+          this.decay = randBetween(0.0005, 0.0015);
+          const v = Math.floor(randBetween(200, 255));
+          this.color = `rgba(${v}, ${v}, ${v}, ${this.alpha})`;
+        }
+
+        update() {
+          this.y += this.velocityY;
+          this.x += this.velocityX;
+          this.alpha -= this.decay;
+          if (this.alpha < 0) this.alpha = 0;
+          if (this.y < -this.size || this.alpha <= 0) {
+            this.reset();
+          }
+        }
+
+        draw() {
+          ctx.beginPath();
+          ctx.fillStyle = this.color.replace(/[\d\.]+\)$/g, `${this.alpha})`);
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.closePath();
+        }
+
+        reset() {
+          this.x = randBetween(0, canvas.width);
+          this.y = randBetween(canvas.height, canvas.height + 50);
+          this.velocityY = randBetween(-0.3, -1.0);
+          this.velocityX = randBetween(-0.2, 0.2);
+          this.size = randBetween(1, 3);
+          this.alpha = randBetween(0.1, 0.3);
+          this.decay = randBetween(0.0005, 0.0015);
+          const v = Math.floor(randBetween(200, 255));
+          this.color = `rgba(${v}, ${v}, ${v}, ${this.alpha})`;
+        }
+      }
+
+      function initParticles() {
+        particles = [];
+        for (let i = 0; i < MAX_PARTICLES; i++) {
+          particles.push(new Particle());
+        }
+      }
+      initParticles();
+
+      function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+        requestAnimationFrame(animateParticles);
+      }
+      animateParticles();
+    })();
+
+    // ================================
+    // 2) Typing Effect (maszynopis) dla nagłówka
+    // ================================
+    document.addEventListener('DOMContentLoaded', () => {
+      const typedTextSpan = document.getElementById('typed-text');
+      const cursorSpan = document.getElementById('cursor');
+
+      const textToType = 'Witaj na stronie DragonConfigs';
+      const typingSpeed = 120;      // ms między literami
+      const erasingSpeed = 60;      // ms między usuwanymi literami
+      const newTextDelay = 1500;    // ms pauzy po wpisaniu całego tekstu
+      let charIndex = 0;
+      let isErasing = false;
+
+      function type() {
+        if (!isErasing) {
+          // Dodawaj kolejne znaki
+          if (charIndex < textToType.length) {
+            typedTextSpan.textContent += textToType.charAt(charIndex);
+            charIndex++;
+            setTimeout(type, typingSpeed);
+          } else {
+            // Cały tekst wpisany -> poczekaj, potem zacznij wymazywać
+            setTimeout(() => {
+              isErasing = true;
+              setTimeout(type, erasingSpeed);
+            }, newTextDelay);
+          }
+        } else {
+          // Usuwanie liter
+          if (charIndex > 0) {
+            typedTextSpan.textContent = textToType.substring(0, charIndex - 1);
+            charIndex--;
+            setTimeout(type, erasingSpeed);
+          } else {
+            // Tekst całkowicie usunięty -> zacznij pisać od nowa
+            isErasing = false;
+            setTimeout(type, typingSpeed);
+          }
+        }
+      }
+
+      // Startujemy animację po krótkim opóźnieniu
+      setTimeout(type, newTextDelay);
+    });
+  </script>
 </body>
 </html>
