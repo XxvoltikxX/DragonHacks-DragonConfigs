@@ -15,15 +15,14 @@
 
   <style>
     /* ============================
-       Reset i podstawowa struktura
+       RESET I PODSTAWOWA STRUKTURA
        ============================ */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    html,
-    body {
+    html, body {
       width: 100%;
       height: 100%;
       overflow-x: hidden;
@@ -73,35 +72,33 @@
       letter-spacing: 1px;
     }
     @keyframes gradient-wave {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
     .nav-menu {
       display: flex;
       gap: 1.5rem;
       margin-left: auto;
+      align-items: center;
+    }
+    .nav-menu li {
+      position: relative;
     }
     .nav-menu a {
       padding: 0.5rem 0.75rem;
       font-size: 1rem;
       color: #e0e0e0;
       transition: color 0.2s ease;
-      position: relative;
+      display: block;
     }
     .nav-menu a:hover {
       color: #00ffc2;
     }
-    .nav-menu li.active > a {
+    .nav-menu .active > a {
       color: #00ffc2;
     }
-    .nav-menu li.active > a::after {
+    .nav-menu .active > a::after {
       content: "";
       position: absolute;
       bottom: -4px;
@@ -112,12 +109,40 @@
       border-radius: 2px;
     }
 
+    /* DROPDOWN (opcjonalnie, jeśli potrzebujesz) */
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #000;
+      border: 1px solid #222;
+      border-radius: 4px;
+      min-width: 200px;
+      padding: 0.5rem 0;
+      z-index: 200;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 0.4rem 1rem;
+      white-space: nowrap;
+      color: #e0e0e0;
+      transition: background-color 0.2s ease;
+    }
+    .dropdown-menu a:hover {
+      background-color: #222;
+      color: #00ffc2;
+    }
+
     /* ============================
-       KONTENER NA WIDEO (tło)
+       TŁO WIDEO (pojawia się pod navbarem)
        ============================ */
     .video-background {
       position: fixed;
-      top: 60px; /* pod navbar’em */
+      top: 60px; /* zaraz pod NAVBAR-em */
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
@@ -137,11 +162,11 @@
     }
 
     /* ============================
-       GŁÓWNA ZAWARTOŚĆ (hero) 
+       SEKCJA HERO (tekst + przycisk na środku ekranu)
        ============================ */
     header.hero {
       position: absolute;
-      top: 60px; /* pod navbar’em */
+      top: 60px; /* poniżej navbaru */
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
@@ -152,6 +177,7 @@
       text-align: center;
       z-index: 1; /* nad wideo */
       color: #ffffff;
+      padding: 0 1rem;
     }
     header.hero h1 {
       font-size: 2.5rem;
@@ -170,18 +196,19 @@
       color: #000;
       border-radius: 4px;
       font-weight: bold;
-      transition: background-color 0.2s ease;
+      transition: background-color 0.2s ease, transform 0.2s ease;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     }
     header.hero .btn:hover {
       background-color: #00e4b0;
+      transform: translateY(-2px);
     }
 
     /* ============================
-       TREŚĆ PO HERO (ukryta, pojawi się po scrollu)
+       ZAWARTOŚĆ PO HERO (po przewinięciu)
        ============================ */
     .after-video {
-      margin-top: 100vh; /* przesuń pod hero */
+      margin-top: 100vh; /* przesuwa wszystko pod cały hero */
     }
     .about-section {
       padding: 3rem 1rem;
@@ -234,23 +261,23 @@
     </div>
   </nav>
 
-  <!-- TAKIE WIDEO JAK TŁO -->
+  <!-- TŁO WIDEO (YouTube przez HTTPS, bez mute) -->
   <div class="video-background">
     <iframe
-      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=19&autoplay=1&mute=1&controls=0&loop=1&playlist=PD8RH_c7Kvk"
+      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=19&autoplay=1&controls=1&loop=1&playlist=PD8RH_c7Kvk"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen
     ></iframe>
   </div>
 
-  <!-- HERO (NAPIS + PRZYCISK) -->
+  <!-- SEKCJA HERO (tekst + przycisk) -->
   <header class="hero">
     <h1>DragonConfigs</h1>
     <p>Twoje centrum cheatów i configów do Minecrafta</p>
     <a href="#AllMC" class="btn">Zobacz Configi</a>
   </header>
 
-  <!-- PO TLE / PO HERO: sekcja, która pojawia się po przewinięciu -->
+  <!-- PO HERO: treść, która pojawia się po przewinięciu -->
   <div class="after-video">
     <section id="AllMC" class="about-section">
       <h2>O nas</h2>
