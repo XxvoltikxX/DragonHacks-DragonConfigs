@@ -7,8 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="Style.css" /> {/* Jeśli plik Style.css istnieje i zawiera dodatkowe style, upewnij się, że ścieżka jest poprawna */}
-
   <style>
     /* ============================
         Reset i podstawowa struktura
@@ -23,7 +21,7 @@
       height: 100%;
       overflow-x: hidden;
       font-family: 'Poppins', sans-serif;
-      background-color: #000; /* w razie problemu z wideo */
+      background-color: #000; /* Kolor tła widoczny, jeśli wideo się nie załaduje */
     }
 
     /* ============================
@@ -43,7 +41,6 @@
       padding: 0 1rem;
       z-index: 10;
     }
-    /* Animowany napis „DragonConfigs” */
     .nav-logo {
       font-size: 1.5rem;
       font-weight: 700;
@@ -86,7 +83,6 @@
     .nav-list .active > a {
       color: #00ffc2;
     }
-    /* Dropdown */
     .dropdown-menu {
       display: none;
       position: absolute;
@@ -130,28 +126,27 @@
     }
 
     /* ============================
-        Kontener iframe (tło wideo) z rozmyciem
+        Kontener iframe (tło wideo)
         ============================ */
     .video-background {
       position: fixed;
-      top: 60px; /* Dopasowane do wysokości paska nawigacyjnego */
+      top: 60px;
       left: 0;
       width: 100vw;
-      height: calc(100vh - 60px); /* Wypełnia pozostałą część ekranu */
-      z-index: 0; /* Pod innymi elementami */
-      overflow: hidden; /* Aby ucięte części iframe nie były widoczne */
-      pointer-events: none; /* Pozwala na kliknięcia "przez" ten div do overlay'a */
+      height: calc(100vh - 60px);
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
     }
     .video-background iframe {
       position: absolute;
       top: 50%;
       left: 50%;
-      /* Proporcje 16:9 dla wideo */
       width: 177.77777778vh; /* 100vh * 16/9 */
       min-width: 100vw;
       height: 56.25vw;    /* 100vw * 9/16 */
       min-height: 100vh;
-      transform: translate(-50%, -50%); /* Wyśrodkowanie iframe */
+      transform: translate(-50%, -50%);
       border: none;
       filter: blur(8px);
     }
@@ -159,31 +154,31 @@
     /* Overlay do przechwycenia kliknięcia i odciszenia */
     #click-overlay {
       position: fixed;
-      top: 60px; /* Musi pasować do pozycji .video-background */
+      top: 60px;
       left: 0;
       width: 100vw;
-      height: calc(100vh - 60px); /* Musi pasować do rozmiaru .video-background */
-      z-index: 3; /* Nad wideo, pod treścią (hero) */
+      height: calc(100vh - 60px);
+      z-index: 3;
       cursor: pointer;
-      background-color: rgba(0,0,0,0); /* W pełni przezroczysty */
+      background-color: rgba(0,0,0,0);
     }
 
     /* ============================
         Hero (tekst + przycisk na środku ekranu)
         ============================ */
     header.hero {
-      position: absolute;
-      top: 60px; /* Pod paskiem nawigacyjnym */
+      position: absolute; /* Było 'absolute', jeśli ma być na wideo, to jest OK */
+      top: 60px;
       left: 0;
       width: 100vw;
-      height: calc(100vh - 60px); /* Wypełnia pozostałą część ekranu */
+      height: calc(100vh - 60px);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
       color: #fff;
-      z-index: 5; /* Nad overlay i wideo */
+      z-index: 5; /* Musi być nad .click-overlay */
     }
     .typewriter-container {
       display: flex;
@@ -191,7 +186,7 @@
       justify-content: center;
       font-size: 2.5rem;
       font-weight: 700;
-      height: auto; /* Lub określona wysokość, jeśli potrzebujesz */
+      height: auto;
     }
     #typed-text {
       background: linear-gradient(
@@ -228,15 +223,15 @@
     header.hero .btn {
       display: inline-block;
       padding: 0.85rem 1.75rem;
-      background-color: transparent; /* Przycisk przezroczysty */
-      border: none; /* Usunięcie domyślnej ramki */
+      background-color: transparent;
+      border: none;
       color: #ffffff;
       text-decoration: none;
       font-size: 1rem;
       font-weight: 500;
       transition: color 0.2s ease, transform 0.2s ease;
       text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.8);
-      border-radius: 20px; /* Zaokrąglone rogi */
+      border-radius: 20px;
     }
     header.hero .btn:hover {
       color: #00ffc2;
@@ -247,18 +242,25 @@
         Stopka
         ============================ */
     footer {
-      /* margin-top powinien być ustawiony tak, aby stopka była pod treścią.
-         Jeśli treść jest dynamiczna, to może być problematyczne.
-         Dla tej konkretnej struktury, gdzie hero zajmuje 100vh - 60px: */
-      margin-top: calc(100vh - 60px + 60px); /* Cała wysokość widoku + wysokość nav */
-      /* Alternatywnie, jeśli .hero nie jest position:absolute, stopka naturalnie ułoży się pod nim */
-      position: relative; /* Aby z-index działał poprawnie, jeśli jest potrzebny */
+      /* Jeśli header.hero ma position: absolute i wysokość calc(100vh - 60px),
+         stopka może być zakryta lub wymagać innego pozycjonowania.
+         Dla prostoty zakładam, że treść strony będzie scrollowana
+         lub stopka jest częścią innej sekcji.
+         Jeśli strona ma tylko jedną "stronę" wysokości (hero),
+         to footer może wymagać position: fixed; bottom: 0;
+         lub dynamicznego obliczenia margin-top.
+         Na razie zostawiam jak było, ale miej to na uwadze. */
       padding: 1.5rem 1rem;
       background-color: #111;
       color: #aaa;
       text-align: center;
       font-size: 0.9rem;
-      z-index: 6; /* Na wierzchu, jeśli inne elementy mogłyby ją zakryć */
+      position: relative; /* Aby upewnić się, że jest w normalnym przepływie dokumentu */
+      z-index: 6; /* Na wypadek gdyby inne elementy mogły ją zakryć */
+      /* margin-top: calc(100vh - 60px + 60px);  <-- usunięte, bo hero jest absolute */
+      /* Jeśli cała strona (razem z hero i contentem) ma być wyższa niż ekran,
+         ten margin-top nie jest potrzebny, stopka po prostu będzie na dole.
+         Jeśli hero jest jedyną treścią, to trzeba to przemyśleć inaczej. */
     }
     footer a {
       color: #00ffc2;
@@ -275,11 +277,11 @@
   <div class="video-background">
     <iframe
       id="bg-video"
-      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=19&autoplay=1&mute=1&controls=0&loop=1&playlist=PD8RH_c7Kvk&enablejsapi=1&iv_load_policy=3&modestbranding=1&fs=0"
+      src="https://www.youtube-nocookie.com/embed/TUTAJ_ID_TWOJEGO_NOWEGO_WIDEO?start=0&autoplay=1&mute=1&controls=0&loop=1&playlist=TUTAJ_ID_TWOJEGO_NOWEGO_WIDEO&enablejsapi=1&iv_load_policy=3&modestbranding=1&fs=0"
       allow="autoplay; encrypted-media;"
-      allowfullscreen {/* Może nie być konieczne, jeśli controls=0 i fs=0 */}
+      allowfullscreen
     ></iframe>
-  </div>
+    </div>
 
   <div id="click-overlay"></div>
 
@@ -317,9 +319,8 @@
 
   <script>
     let player;
-    let clickOverlayElement; // Zdefiniujmy, aby mieć dostęp później
+    let clickOverlayElement;
 
-    // Ta funkcja jest wywoływana przez API YouTube po jego załadowaniu
     function onYouTubeIframeAPIReady() {
       console.log("YouTube IFrame API Ready. Initializing player...");
       player = new YT.Player('bg-video', {
@@ -331,54 +332,45 @@
     }
 
     function onPlayerReady(event) {
-      // Wideo jest gotowe i powinno automatycznie odtwarzać się wyciszone dzięki parametrom URL.
       console.log("YouTube Player Ready. Video should be autoplaying (muted).");
-      // event.target.playVideo(); // Niepotrzebne, jeśli używasz autoplay=1 w URL
-      // event.target.mute();    // Niepotrzebne, jeśli używasz mute=1 w URL
     }
 
     function onPlayerStateChange(event) {
-      // Pętla wideo. Parametry URL `loop=1&playlist=VIDEO_ID` powinny to obsłużyć,
-      // ale to jest zapasowe rozwiązanie w JS.
       if (event.data === YT.PlayerState.ENDED) {
-        player.seekTo(19); // Przewija do Twojego czasu startowego (19 sekund)
-        player.playVideo();
+        // Możesz tu ustawić czas startowy, jeśli 'start' w URL nie wystarcza lub chcesz inne zachowanie
+        // player.seekTo(TWOJ_CZAS_STARTU_W_SEKUNDACH);
+        player.playVideo(); // Ponownie odtwórz, aby zapętlić
         console.log("Video ended and restarted (looping).");
       }
     }
 
-    // Nasłuchiwacz kliknięcia powinien być dodany po załadowaniu DOM.
     document.addEventListener('DOMContentLoaded', () => {
       clickOverlayElement = document.getElementById('click-overlay');
 
       if (clickOverlayElement) {
         clickOverlayElement.addEventListener('click', () => {
           if (player && typeof player.unMute === 'function' && typeof player.playVideo === 'function') {
-            if (player.isMuted()) { // Odcisz tylko, jeśli jest aktualnie wyciszone
+            if (player.isMuted()) {
                 player.unMute();
                 console.log("Video unmuted by user click.");
             }
-            player.playVideo(); // Upewnij się, że gra
+            player.playVideo();
             console.log("Play video command sent after click.");
 
-            // Usuń overlay po pierwszym kliknięciu, aby nie przeszkadzał dalej
             if (clickOverlayElement && clickOverlayElement.parentNode) {
               clickOverlayElement.parentNode.removeChild(clickOverlayElement);
-              clickOverlayElement = null; // Wyczyść referencję
+              clickOverlayElement = null;
               console.log("Click overlay removed.");
             }
           } else {
-            console.log("Player not ready or unMute/playVideo function not available yet. User clicked too early or API issue.");
-            // Może się zdarzyć, jeśli użytkownik kliknie, zanim API YouTube będzie w pełni gotowe.
+            console.warn("Player not ready or unMute/playVideo function not available yet. User clicked too early or API issue.");
           }
         });
       } else {
         console.error("Click overlay element (#click-overlay) not found!");
       }
 
-      // ================================
-      // 1) Unoszące się pyłki (Floating Dust)
-      // ================================
+      // --- Animacja pyłków ---
       (function() {
         const canvas = document.getElementById('fireCanvas');
         if (!canvas) {
@@ -387,61 +379,53 @@
         }
         const ctx = canvas.getContext('2d');
         let particles = [];
-        const MAX_PARTICLES = 120; // Zmniejszono dla testu, możesz zwiększyć
+        const MAX_PARTICLES = 100; // Możesz dostosować ilość
 
         function resizeCanvas() {
           canvas.width = window.innerWidth;
           const navHeight = document.querySelector('nav')?.offsetHeight || 60;
           canvas.height = window.innerHeight - navHeight;
-          // Po zmianie rozmiaru canvasa, zresetuj pozycje pyłków, aby uniknąć pustych obszarów
-          // initParticles(); // Opcjonalnie: jeśli chcesz, aby pyłki "odświeżyły się" przy resize
         }
         window.addEventListener('resize', resizeCanvas);
-        resizeCanvas(); // Ustaw rozmiar początkowy
+        resizeCanvas();
 
         function randBetween(min, max) {
           return Math.random() * (max - min) + min;
         }
 
         class Particle {
-          constructor() {
-            this.reset();
-          }
+          constructor() { this.reset(); }
           update() {
             this.y += this.velocityY;
             this.x += this.velocityX;
             this.alpha -= this.decay;
-
             if (this.alpha <= 0 || this.y < -this.size || this.x < -this.size || this.x > canvas.width + this.size) {
-              this.reset(); // Resetuj, gdy zniknie lub wyjdzie poza obszar
+              this.reset();
             }
           }
           draw() {
-            if (this.alpha <= 0) return; // Nie rysuj niewidocznych
+            if (this.alpha <= 0) return;
             ctx.beginPath();
-            ctx.fillStyle = this.color.replace(/[\d\.]+\)$/g, `${this.alpha.toFixed(2)})`); // Poprawione dla alpha
+            ctx.fillStyle = this.color.replace(/[\d\.]+\)$/g, `${this.alpha.toFixed(2)})`);
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
             ctx.closePath();
           }
           reset() {
             this.x = randBetween(0, canvas.width);
-            this.y = randBetween(canvas.height, canvas.height + 50); // Startuj z dołu
-            this.velocityY = randBetween(-0.3, -1.0); // Ruch w górę
-            this.velocityX = randBetween(-0.2, 0.2); // Lekki ruch na boki
+            this.y = randBetween(canvas.height, canvas.height + 50);
+            this.velocityY = randBetween(-0.3, -1.0);
+            this.velocityX = randBetween(-0.2, 0.2);
             this.size = randBetween(1, 3);
-            this.alpha = randBetween(0.2, 0.6); // Trochę bardziej widoczne
+            this.alpha = randBetween(0.2, 0.6);
             this.decay = randBetween(0.0005, 0.0015);
             const v = Math.floor(randBetween(200, 255));
-            this.color = `rgba(${v}, ${v}, ${v}, ${this.alpha})`; // Zapisz początkowy kolor z alpha
+            this.color = `rgba(${v}, ${v}, ${v}, ${this.alpha})`;
           }
         }
-
         function initParticles() {
           particles = [];
-          for (let i = 0; i < MAX_PARTICLES; i++) {
-            particles.push(new Particle());
-          }
+          for (let i = 0; i < MAX_PARTICLES; i++) { particles.push(new Particle()); }
         }
         initParticles();
 
@@ -449,26 +433,18 @@
         function animateParticles(timestamp) {
           const deltaTime = timestamp - lastTime;
           lastTime = timestamp;
-
-          // Ogranicz aktualizacje, jeśli deltaTime jest zbyt duże (np. po przełączeniu karty)
-          if (deltaTime < 100) { // np. nie aktualizuj, jeśli klatka trwała dłużej niż 100ms
+          if (deltaTime < 100) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-              p.update(); // Przekaż deltaTime, jeśli animacja ma być zależna od czasu
-              p.draw();
-            });
+            particles.forEach(p => { p.update(); p.draw(); });
           }
           requestAnimationFrame(animateParticles);
         }
-        requestAnimationFrame(animateParticles); // Rozpocznij animację
+        requestAnimationFrame(animateParticles);
       })();
 
-      // ================================
-      // 2) Typing Effect (maszynopis) dla nagłówka
-      // ================================
+      // --- Efekt maszynopisu ---
       const typedTextSpan = document.getElementById('typed-text');
       const cursorSpan = document.getElementById('cursor');
-
       if (typedTextSpan && cursorSpan) {
         const textToType = 'Witaj na stronie DragonConfigs';
         const typingSpeed = 120;
@@ -478,18 +454,14 @@
         let isErasing = false;
 
         function type() {
-          if (!typedTextSpan || !cursorSpan) return; // Dodatkowe zabezpieczenie
-
+          if (!typedTextSpan || !cursorSpan) return;
           if (!isErasing) {
             if (charIndex < textToType.length) {
               typedTextSpan.textContent += textToType.charAt(charIndex);
               charIndex++;
               setTimeout(type, typingSpeed);
             } else {
-              setTimeout(() => {
-                isErasing = true;
-                setTimeout(type, erasingSpeed); // Zacznij kasować po pauzie
-              }, newTextDelay);
+              setTimeout(() => { isErasing = true; setTimeout(type, erasingSpeed); }, newTextDelay);
             }
           } else {
             if (charIndex > 0) {
@@ -498,12 +470,11 @@
               setTimeout(type, erasingSpeed);
             } else {
               isErasing = false;
-              // Opcjonalnie: zmień tekst do wpisania lub dodaj dłuższą pauzę
-              setTimeout(type, typingSpeed); // Zacznij pisać ponownie
+              setTimeout(type, typingSpeed);
             }
           }
         }
-        setTimeout(type, newTextDelay); // Początkowe opóźnienie przed rozpoczęciem pisania
+        setTimeout(type, newTextDelay);
       } else {
         console.warn("Elementy #typed-text lub #cursor nie znalezione dla efektu maszynopisu.");
       }
