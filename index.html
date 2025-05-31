@@ -131,7 +131,7 @@
     }
 
     /* ===========================================
-       WIDEO W TLE (YT) – próbujemy bez wstępnego mute
+       WIDEO W TLE (YT) – bezpośrednie odwołanie do iframe
        =========================================== */
     .video-background {
       position: fixed;
@@ -154,7 +154,7 @@
     }
 
     /* ===========================================
-       Transparentny overlay, żeby złapać pierwszy klik (unMute)
+       Transparentny overlay, który pozwoli odciszyć dźwięk
        =========================================== */
     #click-overlay {
       position: fixed;
@@ -267,7 +267,7 @@
   <!-- 1) CANVAS dla unoszących się pyłków -->
   <canvas id="fireCanvas"></canvas>
 
-  <!-- 2) WIDEO Z YOUTUBE (bez mute=1, z autoplay=1 & enablejsapi=1) -->
+  <!-- 2) WIDEO Z YOUTUBE (autoplay, enablejsapi=1, brak łamania wierszy w URL) -->
   <div class="video-background">
     <iframe
       id="bg-video"
@@ -277,7 +277,7 @@
     ></iframe>
   </div>
 
-  <!-- 3) OVERLAY, który po pierwszym kliknięciu spróbuje odciszyć wideo -->
+  <!-- 3) OVERLAY do odciszania wideo -->
   <div id="click-overlay"></div>
 
   <!-- 4) PASEK NAWIGACYJNY NA GÓRZE -->
@@ -313,7 +313,7 @@
     <p><a href="https://minecraft.net" target="_blank" rel="noopener">Oficjalna strona Minecraft</a></p>
   </footer>
 
-  <!-- 7) YOUTUBE IFRAME API (wymagane, by próbować unMute po pierwszym kliknięciu) -->
+  <!-- 7) YouTube IFrame API, aby kliknięcie zdjąło mute -->
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
     let player;
@@ -321,25 +321,26 @@
       player = new YT.Player('bg-video', {
         events: {
           'onReady': () => {
-            // Film jest wczytany – próbujemy autostartu z dźwiękiem.
+            // gdy wideo gotowe, nic więcej nie robimy;
+            // autoplay=1 w URL już wdrożone
           }
         }
       });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // 1) Kliknięcie na overlay: próbujemy odciszyć wideo
+      // Po pierwszym kliknięciu na overlay próbujemy odciszyć wideo.
       const overlay = document.getElementById('click-overlay');
       overlay.addEventListener('click', () => {
         if (player && typeof player.unMute === 'function') {
-          player.unMute();    // próbujemy odciszyć wideo
-          player.playVideo(); // w razie potrzeby wznowić odtwarzanie
+          player.unMute();
+          player.playVideo();
         }
-        // Usuwamy overlay, aby nie blokował interakcji w przyszłości:
+        // Usuwamy overlay, by w przyszłości nie przeszkadzał:
         overlay.parentNode.removeChild(overlay);
       });
 
-      // 2) Animacja unoszących się pyłków
+      // ===== Floating Dust / Unoszące się pyłki =====
       const canvas = document.getElementById('fireCanvas');
       const ctx = canvas.getContext('2d');
       let particles = [];
@@ -415,7 +416,7 @@
       }
       animateParticles();
 
-      // 3) Efekt pisania (TYPEWRITER) w HERO:
+      // ===== Efekt maszyny do pisania (Typewriter) =====
       const typedTextSpan = document.getElementById('typed-text');
       const cursorSpan = document.getElementById('cursor');
       const textToType = 'Witaj na stronie DragonConfigs';
