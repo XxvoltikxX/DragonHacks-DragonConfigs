@@ -42,7 +42,7 @@
       display: flex;
       align-items: center;
       padding: 0 1rem;
-      z-index: 4;
+      z-index: 10;
     }
     /* Animowany napis „DragonConfigs” */
     .nav-logo {
@@ -87,7 +87,7 @@
     .nav-list .active > a {
       color: #00ffc2;
     }
-    /* Półprzezroczyste tło dropdownu */
+    /* Dropdown */
     .dropdown-menu {
       display: none;
       position: absolute;
@@ -98,7 +98,7 @@
       border-radius: 4px;
       list-style: none;
       padding: 0.5rem 0;
-      z-index: 5;
+      z-index: 11;
     }
     .dropdown:hover .dropdown-menu {
       display: block;
@@ -127,7 +127,7 @@
       width: 100vw;
       height: calc(100vh - 60px);
       pointer-events: none;
-      z-index: 1;
+      z-index: 2;
     }
 
     /* ============================
@@ -153,6 +153,17 @@
       filter: blur(8px);
       transform: translate(0, 0) scale(1.1);
     }
+    /* Overlay do przechwycenia kliknięcia i odciszenia */
+    #click-overlay {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 100vw;
+      height: calc(100vh - 60px);
+      z-index: 3;
+      cursor: pointer;
+      background-color: rgba(0,0,0,0); /* w pełni przezroczysty */
+    }
 
     /* ============================
        Hero (tekst + przycisk na środku ekranu)
@@ -169,7 +180,7 @@
       align-items: center;
       text-align: center;
       color: #fff;
-      z-index: 2;
+      z-index: 5;
     }
     .typewriter-container {
       display: flex;
@@ -253,16 +264,20 @@
   <!-- Canvas dla unoszących się pyłków -->
   <canvas id="fireCanvas"></canvas>
 
-  <!-- Pełnoekranowe wideo z YouTube jako tło (rozmyte, rozpoczęte w trybie muted) -->
+  <!-- Pełnoekranowe wideo z YouTube jako tło (zaczyna w trybie mute, potem unMute po kliknięciu) -->
   <div class="video-background">
     <iframe
-      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=19&autoplay=1&mute=1&controls=1&loop=1&playlist=PD8RH_c7Kvk"
+      id="bg-video"
+      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=19&autoplay=1&mute=1&controls=1&loop=1&playlist=PD8RH_c7Kvk&enablejsapi=1"
       allow="autoplay; encrypted-media; fullscreen"
       allowfullscreen
     ></iframe>
   </div>
 
-  <!-- Pasek nawigacyjny (półprzezroczyste tło) -->
+  <!-- Overlay do przechwycenia kliknięcia (po jednym kliknięciu wywoła unMute) -->
+  <div id="click-overlay"></div>
+
+  <!-- Pasek nawigacyjny -->
   <nav>
     <a href="index.html" class="nav-logo">DragonConfigs</a>
     <ul class="nav-list">
@@ -280,7 +295,7 @@
     </ul>
   </nav>
 
-  <!-- Główna zawartość: hero z animacją pisania i szybszym gradientem -->
+  <!-- Główna zawartość: hero -->
   <header class="hero">
     <div class="typewriter-container">
       <span id="typed-text"></span><span id="cursor">|</span>
@@ -295,12 +310,39 @@
     <p><a href="https://minecraft.net" target="_blank" rel="noopener">Oficjalna strona Minecraft</a></p>
   </footer>
 
-  <!-- Skrypt: animacja unoszących się pyłków i animacja typu „maszynopis” -->
+  <!-- Ładowanie YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
+    let player;
+    function onYouTubeIframeAPIReady() {
+      // Inicjalizuje odtwarzacz, ale nie włącza dźwięku
+      player = new YT.Player('bg-video', {
+        events: {
+          'onReady': () => {
+            // nic tu nie robimy – odtwarzacz już wczytany w mute
+          }
+        }
+      });
+    }
+
+    // Po załadowaniu DOM: dodajemy listener na overlay
+    document.addEventListener('DOMContentLoaded', () => {
+      const overlay = document.getElementById('click-overlay');
+
+      overlay.addEventListener('click', () => {
+        if (player && typeof player.unMute === 'function') {
+          player.unMute();           // odcisza wideo
+          player.playVideo();        // upewniamy się, że gra
+        }
+        // Po jednym kliknięciu usuwamy overlay, żeby nie przeszkadzał
+        overlay.parentNode.removeChild(overlay);
+      });
+    });
+
     // ================================
     // 1) Unoszące się pyłki (Floating Dust)
     // ================================
-    (() => {
+    (function() {
       const canvas = document.getElementById('fireCanvas');
       const ctx = canvas.getContext('2d');
       let particles = [];
@@ -308,7 +350,7 @@
 
       function resizeCanvas() {
         canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight - 60; // odliczamy wysokość navbaru
+        canvas.height = window.innerHeight - 60;
       }
       window.addEventListener('resize', resizeCanvas);
       resizeCanvas();
@@ -329,7 +371,6 @@
           const v = Math.floor(randBetween(200, 255));
           this.color = `rgba(${v}, ${v}, ${v}, ${this.alpha})`;
         }
-
         update() {
           this.y += this.velocityY;
           this.x += this.velocityX;
@@ -339,7 +380,6 @@
             this.reset();
           }
         }
-
         draw() {
           ctx.beginPath();
           ctx.fillStyle = this.color.replace(/[\d\.]+\)$/g, `${this.alpha})`);
@@ -347,7 +387,6 @@
           ctx.fill();
           ctx.closePath();
         }
-
         reset() {
           this.x = randBetween(0, canvas.width);
           this.y = randBetween(canvas.height, canvas.height + 50);
@@ -386,7 +425,6 @@
     document.addEventListener('DOMContentLoaded', () => {
       const typedTextSpan = document.getElementById('typed-text');
       const cursorSpan = document.getElementById('cursor');
-
       const textToType = 'Witaj na stronie DragonConfigs';
       const typingSpeed = 120;      // ms między literami
       const erasingSpeed = 60;      // ms między usuwanymi literami
@@ -396,33 +434,27 @@
 
       function type() {
         if (!isErasing) {
-          // Dodawaj kolejne znaki
           if (charIndex < textToType.length) {
             typedTextSpan.textContent += textToType.charAt(charIndex);
             charIndex++;
             setTimeout(type, typingSpeed);
           } else {
-            // Cały tekst wpisany -> poczekaj, potem zacznij wymazywać
             setTimeout(() => {
               isErasing = true;
               setTimeout(type, erasingSpeed);
             }, newTextDelay);
           }
         } else {
-          // Usuwanie liter
           if (charIndex > 0) {
             typedTextSpan.textContent = textToType.substring(0, charIndex - 1);
             charIndex--;
             setTimeout(type, erasingSpeed);
           } else {
-            // Tekst całkowicie usunięty -> zacznij pisać od nowa
             isErasing = false;
             setTimeout(type, typingSpeed);
           }
         }
       }
-
-      // Start animacji po krótkim opóźnieniu
       setTimeout(type, newTextDelay);
     });
   </script>
