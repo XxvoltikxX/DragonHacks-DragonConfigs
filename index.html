@@ -27,7 +27,7 @@
       height: 100%;
       overflow-x: hidden;
       font-family: 'Poppins', sans-serif;
-      background-color: #000; /* na wypadek, gdyby wideo się nie wczytało */
+      background-color: #000; /* na wypadek, gdyby tło się nie wczytało */
     }
 
     /* ===========================================
@@ -128,45 +128,24 @@
       width: 100vw;
       height: calc(100vh - 60px);
       pointer-events: none;
-      z-index: 2; /* nad wideo, pod hero */
+      z-index: 2; /* nad tłem, pod hero */
     }
 
     /* ===========================================
-       WIDEO W TLE (YT) – mute i autoplay
+       TŁO STATYCZNE zamiast wideo – można wstawić dowolne
        =========================================== */
-    .video-background {
-      position: fixed;
-      top: 60px; /* tuż pod navbarem */
-      left: 0;
-      width: 100vw;
-      height: calc(100vh - 60px);
-      z-index: 0; /* najniżej */
-      overflow: hidden;
-    }
-    .video-background iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      filter: blur(8px);
-      transform: translate(0, 0) scale(1.1);
-    }
-
-    /* ===========================================
-       Przezroczysty overlay, który po kliknięciu odcisza wideo
-       =========================================== */
-    #click-overlay {
+    .static-background {
       position: fixed;
       top: 60px;
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
-      z-index: 3;
-      cursor: pointer;
-      background-color: rgba(0,0,0,0); /* zupełnie transparentny */
+      background: url('https://imgur.com/gallery/your-static-poster.jpg') no-repeat center center / cover;
+      z-index: 0; /* najniżej */
     }
+    /* Jeśli nie chcesz statycznego obrazka, możesz ustawić jednolity kolor:
+       background-color: #111; 
+    */
 
     /* ===========================================
        HERO (NAPIS + PRZYCISK NA ŚRODKU)
@@ -183,7 +162,7 @@
       align-items: center;
       text-align: center;
       color: #fff;
-      z-index: 5; /* nad overlayem */
+      z-index: 5; /* nad background i canvasem */
     }
     .typewriter-container {
       display: flex;
@@ -225,21 +204,26 @@
       color: #f0f0f0;
       text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.7);
     }
-    header.hero .btn {
+
+    /* Przyciski w hero */
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    .hero-buttons .btn {
       display: inline-block;
       padding: 0.85rem 1.75rem;
-      background-color: transparent;
+      background-color: #00ffc2;
       border: none;
-      color: #ffffff;
+      color: #0d0d0d;
       text-decoration: none;
       font-size: 1rem;
       font-weight: 500;
-      transition: color 0.2s ease, transform 0.2s ease;
-      text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.8);
       border-radius: 20px;
+      transition: background-color 0.2s ease, transform 0.2s ease;
     }
-    header.hero .btn:hover {
-      color: #00ffc2;
+    .hero-buttons .btn:hover {
+      background-color: #00e0b8;
       transform: translateY(-2px);
     }
 
@@ -268,20 +252,12 @@
   <!-- 1) CANVAS dla unoszących się pyłków -->
   <canvas id="fireCanvas"></canvas>
 
-  <!-- 2) WIDEO Z YOUTUBE w tle (z autostartem, mute=1) -->
-  <div class="video-background">
-    <iframe
-      id="bg-video"
-      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=28&autoplay=1&mute=1&loop=1&playlist=PD8RH_c7Kvk&controls=0&enablejsapi=1&playsinline=1"
-      allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-      allowfullscreen
-    ></iframe>
-  </div>
+  <!-- 2) ZAMIENIONE TŁO NA STATYCZNE (zamiast wideo) -->
+  <div class="static-background"></div>
+  <!-- Możesz w <div class="static-background"> wstawić dowolny obrazek jako tło. -->
+  <!-- Jeśli wolisz jednolity kolor = usuń background-image i użyj background-color: #111; -->
 
-  <!-- 3) PRZEZROCZYSTY OVERLAY do odciszania dźwięku po kliknięciu -->
-  <div id="click-overlay"></div>
-
-  <!-- 4) PASEK NAWIGACYJNY NA GÓRZE -->
+  <!-- 3) PASEK NAWIGACYJNY NA GÓRZE -->
   <nav>
     <a href="index.html" class="nav-logo">DragonConfigs</a>
     <ul class="nav-list">
@@ -299,49 +275,34 @@
     </ul>
   </nav>
 
-  <!-- 5) HERO: Animowany napis + przycisk na środku -->
+  <!-- 4) HERO: NAMÓWKA + PRZYCISKI -->
   <header class="hero">
     <div class="typewriter-container">
       <span id="typed-text"></span><span id="cursor">|</span>
     </div>
     <p>Twoje centrum cheatów i configów do Minecrafta</p>
-    <a href="Configi.html" class="btn">Zobacz Configi</a>
+    <div class="hero-buttons">
+      <!-- Przycisk do podstrony z Configami -->
+      <a href="Configi.html" class="btn">Zobacz Configi</a>
+      <!-- Przycisk „Otwórz wideo na YouTube” -->
+      <a href="https://www.youtube.com/watch?v=PD8RH_c7Kvk&t=28s" target="_blank" class="btn">
+        Obejrzyj Prezentację
+      </a>
+    </div>
   </header>
 
-  <!-- 6) STOPKA -->
+  <!-- 5) STOPKA -->
   <footer>
     <p>&copy; 2025 DragonConfigs | Made by XxvoltikxX</p>
     <p><a href="https://minecraft.net" target="_blank" rel="noopener">Oficjalna strona Minecraft</a></p>
   </footer>
 
-  <!-- 7) YouTube IFrame API oraz logika odciszania -->
-  <script src="https://www.youtube.com/iframe_api"></script>
+  <!-- ================
+       SKRYPTY
+       ================ -->
   <script>
-    let player;
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('bg-video', {
-        events: {
-          onReady: () => {
-            // Video już wczytane (ma ustawione mute=1 i autoplay=1),
-            // więc nic specjalnego tu nie robimy na starcie.
-          }
-        }
-      });
-    }
-
+    // 1) Floating Dust (unoszące się pyłki)
     document.addEventListener('DOMContentLoaded', () => {
-      // 1) Kliknięcie w #click-overlay odcisza dźwięk i odtwarza wideo
-      const overlay = document.getElementById('click-overlay');
-      overlay.addEventListener('click', () => {
-        if (player && typeof player.unMute === 'function') {
-          player.unMute();        // odcisz wideo
-          player.playVideo();     // upewniamy się, że gra
-        }
-        // Usuwamy overlay, żeby już nie blokował
-        overlay.remove();
-      });
-
-      // 2) Floating dust – unoszące się pyłki w tle
       const canvas = document.getElementById('fireCanvas');
       const ctx = canvas.getContext('2d');
       let particles = [];
@@ -349,7 +310,7 @@
 
       function resizeCanvas() {
         canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight - 60; // 60px na navbar
+        canvas.height = window.innerHeight - 60; // 60px navbar
       }
       window.addEventListener('resize', resizeCanvas);
       resizeCanvas();
@@ -417,13 +378,13 @@
       }
       animateParticles();
 
-      // 3) Efekt „maszynopis” w hero
+      // 2) Efekt „maszynopis” w hero
       const typedTextSpan = document.getElementById('typed-text');
       const cursorSpan = document.getElementById('cursor');
       const textToType = 'Witaj na stronie DragonConfigs';
       const typingSpeed = 120;   // ms między literami
       const erasingSpeed = 60;   // ms między usuwanymi literami
-      const newTextDelay = 1500; // ms pauzy po wpisaniu całego tekstu
+      const newTextDelay = 1500; // ms pauzy po wpisaniu
       let charIndex = 0;
       let isErasing = false;
 
