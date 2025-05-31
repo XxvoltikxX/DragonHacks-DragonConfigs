@@ -27,7 +27,7 @@
       height: 100%;
       overflow-x: hidden;
       font-family: 'Poppins', sans-serif;
-      background-color: #000; /* czarne tło, gdyby wideo się nie wczytało */
+      background-color: #000; /* na wypadek, gdyby wideo się nie wczytało */
     }
 
     /* ===========================================
@@ -70,6 +70,7 @@
       50%  { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
+
     .nav-list {
       display: flex;
       list-style: none;
@@ -122,24 +123,24 @@
        =========================================== */
     #fireCanvas {
       position: fixed;
-      top: 60px;                  /* zaraz pod navbarem */
+      top: 60px; /* zaraz pod navbarem */
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
       pointer-events: none;
-      z-index: 2;                 /* nad wideo, pod hero */
+      z-index: 2; /* nad wideo, pod hero */
     }
 
     /* ===========================================
-       WIDEO W TLE (YT) – bezpośrednie odwołanie do iframe
+       WIDEO W TLE (YT) – mute i autoplay
        =========================================== */
     .video-background {
       position: fixed;
-      top: 60px;                  /* zaraz pod navbarem */
+      top: 60px; /* tuż pod navbarem */
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
-      z-index: 0;                 /* najniżej */
+      z-index: 0; /* najniżej */
       overflow: hidden;
     }
     .video-background iframe {
@@ -154,7 +155,7 @@
     }
 
     /* ===========================================
-       Transparentny overlay, który pozwoli odciszyć dźwięk
+       Przezroczysty overlay, który po kliknięciu odcisza wideo
        =========================================== */
     #click-overlay {
       position: fixed;
@@ -164,7 +165,7 @@
       height: calc(100vh - 60px);
       z-index: 3;
       cursor: pointer;
-      background-color: rgba(0,0,0,0); /* w pełni przezroczysty */
+      background-color: rgba(0,0,0,0); /* zupełnie transparentny */
     }
 
     /* ===========================================
@@ -172,7 +173,7 @@
        =========================================== */
     header.hero {
       position: absolute;
-      top: 60px;                   /* start pod navbarem */
+      top: 60px; /* pod navbarem */
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
@@ -182,7 +183,7 @@
       align-items: center;
       text-align: center;
       color: #fff;
-      z-index: 5;                  /* nad overlayem i navbarem */
+      z-index: 5; /* nad overlayem */
     }
     .typewriter-container {
       display: flex;
@@ -267,17 +268,17 @@
   <!-- 1) CANVAS dla unoszących się pyłków -->
   <canvas id="fireCanvas"></canvas>
 
-  <!-- 2) WIDEO Z YOUTUBE (autoplay, enablejsapi=1, brak łamania wierszy w URL) -->
+  <!-- 2) WIDEO Z YOUTUBE w tle (z autostartem, mute=1) -->
   <div class="video-background">
     <iframe
       id="bg-video"
-      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=28&autoplay=1&controls=1&loop=1&playlist=PD8RH_c7Kvk&enablejsapi=1"
-      allow="autoplay; encrypted-media; fullscreen"
+      src="https://www.youtube-nocookie.com/embed/PD8RH_c7Kvk?start=28&autoplay=1&mute=1&loop=1&playlist=PD8RH_c7Kvk&controls=0&enablejsapi=1&playsinline=1"
+      allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
       allowfullscreen
     ></iframe>
   </div>
 
-  <!-- 3) OVERLAY do odciszania wideo -->
+  <!-- 3) PRZEZROCZYSTY OVERLAY do odciszania dźwięku po kliknięciu -->
   <div id="click-overlay"></div>
 
   <!-- 4) PASEK NAWIGACYJNY NA GÓRZE -->
@@ -298,7 +299,7 @@
     </ul>
   </nav>
 
-  <!-- 5) HERO: NAPIS + PRZYCISK NA ŚRODKU -->
+  <!-- 5) HERO: Animowany napis + przycisk na środku -->
   <header class="hero">
     <div class="typewriter-container">
       <span id="typed-text"></span><span id="cursor">|</span>
@@ -313,34 +314,34 @@
     <p><a href="https://minecraft.net" target="_blank" rel="noopener">Oficjalna strona Minecraft</a></p>
   </footer>
 
-  <!-- 7) YouTube IFrame API, aby kliknięcie zdjąło mute -->
+  <!-- 7) YouTube IFrame API oraz logika odciszania -->
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
     let player;
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('bg-video', {
         events: {
-          'onReady': () => {
-            // gdy wideo gotowe, nic więcej nie robimy;
-            // autoplay=1 w URL już wdrożone
+          onReady: () => {
+            // Video już wczytane (ma ustawione mute=1 i autoplay=1),
+            // więc nic specjalnego tu nie robimy na starcie.
           }
         }
       });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Po pierwszym kliknięciu na overlay próbujemy odciszyć wideo.
+      // 1) Kliknięcie w #click-overlay odcisza dźwięk i odtwarza wideo
       const overlay = document.getElementById('click-overlay');
       overlay.addEventListener('click', () => {
         if (player && typeof player.unMute === 'function') {
-          player.unMute();
-          player.playVideo();
+          player.unMute();        // odcisz wideo
+          player.playVideo();     // upewniamy się, że gra
         }
-        // Usuwamy overlay, by w przyszłości nie przeszkadzał:
-        overlay.parentNode.removeChild(overlay);
+        // Usuwamy overlay, żeby już nie blokował
+        overlay.remove();
       });
 
-      // ===== Floating Dust / Unoszące się pyłki =====
+      // 2) Floating dust – unoszące się pyłki w tle
       const canvas = document.getElementById('fireCanvas');
       const ctx = canvas.getContext('2d');
       let particles = [];
@@ -348,7 +349,7 @@
 
       function resizeCanvas() {
         canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight - 60; // 60px navbar
+        canvas.height = window.innerHeight - 60; // 60px na navbar
       }
       window.addEventListener('resize', resizeCanvas);
       resizeCanvas();
@@ -416,7 +417,7 @@
       }
       animateParticles();
 
-      // ===== Efekt maszyny do pisania (Typewriter) =====
+      // 3) Efekt „maszynopis” w hero
       const typedTextSpan = document.getElementById('typed-text');
       const cursorSpan = document.getElementById('cursor');
       const textToType = 'Witaj na stronie DragonConfigs';
