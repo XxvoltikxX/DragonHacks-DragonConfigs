@@ -119,31 +119,28 @@
     }
 
     /* ===========================================
-       CANVAS: UNOSZĄCE SIĘ PYŁKI (FIRECORES)
-       ===========================================
-       - Będzie nad wideo, ale pod hero i navbarem.
-    */
+       CANVAS: unoszące się pyłki (pod wideo)
+       =========================================== */
     #fireCanvas {
       position: fixed;
-      top: 60px;                  /* zaraz pod navbarem */
+      top: 60px;                  /* start pod navbarem */
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
       pointer-events: none;
-      z-index: 2;
+      z-index: 2;                 /* nad wideo, pod hero */
     }
 
     /* ===========================================
-       TŁO WIDEO Z YOUTUBE (Z ROZMYCIEM)
-       ===========================================
-    */
+       Tło wideo z YouTube (bez blur, by pokazać controls)
+       =========================================== */
     .video-background {
       position: fixed;
-      top: 60px;                   /* zaraz pod navbarem */
+      top: 60px;                  /* pod navbarem */
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
-      z-index: 0;                  /* najniżej */
+      z-index: 0;                 /* najniżej */
       overflow: hidden;
     }
     .video-background iframe {
@@ -153,17 +150,17 @@
       width: 100%;
       height: 100%;
       border: none;
+      /* Możesz zostawić filter:blur(8px) jeśli chcesz rozmycie */
       filter: blur(8px);
       transform: translate(0, 0) scale(1.1);
     }
 
     /* ===========================================
-       HERO (NAPIS + PRZYCISK NA ŚRODKU EKRANU)
-       ===========================================
-    */
+       Hero (tekst + przycisk na środku ekranu)
+       =========================================== */
     header.hero {
       position: absolute;
-      top: 60px;                   /* start pod navbarem */
+      top: 60px;                    /* pod navbarem */
       left: 0;
       width: 100vw;
       height: calc(100vh - 60px);
@@ -173,7 +170,7 @@
       align-items: center;
       text-align: center;
       color: #fff;
-      z-index: 5;                  /* nad wideo i canvasem */
+      z-index: 5;                   /* nad wideo i canvasem */
     }
     .typewriter-container {
       display: flex;
@@ -234,9 +231,8 @@
     }
 
     /* ===========================================
-       STOPKA
-       ===========================================
-    */
+       Stopka
+       =========================================== */
     footer {
       padding: 1.5rem 1rem;
       background-color: #111;
@@ -255,10 +251,10 @@
   </style>
 </head>
 <body>
-  <!-- 1) CANVAS dla unoszących się pyłków -->
+  <!-- 1) Canvas: unoszące się pyłki -->
   <canvas id="fireCanvas"></canvas>
 
-  <!-- 2) PEŁNOEKRANOWE WIDEO Z YOUTUBE (z usuniętym `mute=1`) -->
+  <!-- 2) Pełnoekranowe wideo z YouTube (bez mute, autoplay=1) -->
   <div class="video-background">
     <iframe
       id="bg-video"
@@ -268,7 +264,7 @@
     ></iframe>
   </div>
 
-  <!-- 3) PASEK NAWIGACYJNY NA GÓRZE -->
+  <!-- 3) Pasek nawigacyjny -->
   <nav>
     <a href="index.html" class="nav-logo">DragonConfigs</a>
     <ul class="nav-list">
@@ -286,7 +282,7 @@
     </ul>
   </nav>
 
-  <!-- 4) HERO: NAPIS + PRZYCISK NA ŚRODKU -->
+  <!-- 4) Hero: napis + przycisk na środku -->
   <header class="hero">
     <div class="typewriter-container">
       <span id="typed-text"></span><span id="cursor">|</span>
@@ -295,7 +291,7 @@
     <a href="Configi.html" class="btn">Zobacz Configi</a>
   </header>
 
-  <!-- 5) STOPKA -->
+  <!-- 5) Stopka -->
   <footer>
     <p>&copy; 2025 DragonConfigs | Made by XxvoltikxX</p>
     <p><a href="https://minecraft.net" target="_blank" rel="noopener">Oficjalna strona Minecraft</a></p>
@@ -380,12 +376,10 @@
         requestAnimationFrame(animateParticles);
       }
       animateParticles();
-    });
 
-    // ==============================================
-    // 2) Efekt pisania (TYPEWRITER) w HERO
-    // ==============================================
-    document.addEventListener('DOMContentLoaded', () => {
+      // ==============================================
+      // 2) Efekt pisania (TYPEWRITER) w HERO
+      // ==============================================
       const typedTextSpan = document.getElementById('typed-text');
       const cursorSpan = document.getElementById('cursor');
       const textToType = 'Witaj na stronie DragonConfigs';
