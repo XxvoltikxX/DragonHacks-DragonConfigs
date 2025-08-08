@@ -244,449 +244,239 @@
       -webkit-text-fill-color: transparent;
       animation: gradient-wave 1.5s ease-in-out infinite;
       text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    #typed-text.visible {
+      opacity: 1;
     }
     #cursor {
       display: inline-block;
-      margin-left: 4px;
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #ffffff;
-      animation: blink 0.7s step-start infinite;
+      width: 2px;
+      height: 2.5rem;
+      background-color: #00ffc2;
+      margin-left: 5px;
+      animation: blink 1s steps(1) infinite;
     }
     @keyframes blink {
-      50% { opacity: 0; }
+      0%, 50% { opacity: 1; }
+      50.01%, 100% { opacity: 0; }
     }
-    header.hero p {
-      font-size: 1.5rem;
-      margin: 1rem 0 2rem;
-      color: #f0f0f0;
-      text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.7);
-      will-change: transform;
+
+    /* PRZYCISK W HERO */
+    #hero-button {
+      margin-top: 2rem;
+      padding: 0.75rem 3rem;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      border: 2px solid #00ffc2;
+      background-color: transparent;
+      color: #00ffc2;
+      cursor: pointer;
+      pointer-events: auto; /* przycisk klikalny */
+      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 15px #00ffc2;
     }
-    /* Przycisk w hero: PRZEZROCZYSTE TŁO + GRADIENTOWA RAMKA i TEKST, ZAOKRĄGLONE */
-    .hero-buttons {
-      display: flex;
-      gap: 1rem;
-      pointer-events: all;
-    }
-    .hero-buttons .btn {
-      display: inline-block;
-      padding: 0.85rem 1.75rem;
-      background-color: transparent;      /* przezroczyste tło */
-      border: 2px solid;                  /* grubość ramki */
-      border-image:
-        linear-gradient(
-          45deg,
-          #00ffd1 0%,
-          #00bfff 25%,
-          #ff00ff 50%,
-          #ff0055 75%,
-          #ffee00 100%
-        ) 1;                                /* gradientowa ramka */
-      color: transparent;                   /* gradientowy tekst */
-      background:
-        linear-gradient(
-          45deg,
-          #00ffd1 0%,
-          #00bfff 25%,
-          #ff00ff 50%,
-          #ff0055 75%,
-          #ffee00 100%
-        );
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: gradient-wave 1.5s ease-in-out infinite;
-      text-decoration: none;
-      font-size: 1rem;
-      font-weight: 500;
-      border-radius: 20px;                 /* ZAOKRĄGLAMY ROGI */
-      position: relative;
-      overflow: hidden;                    /* ripple nie wychodzi poza obręb */
-      transition:
-        background-color 0.2s ease,
-        transform 0.2s ease,
-        border-image 0.2s ease;
-      z-index: 6;
-    }
-    .hero-buttons .btn:hover {
-      background-color: rgba(0, 255, 194, 0.1); /* delikatna poświata przy hover */
-      transform: translateY(-2px);
-    }
-    .hero-buttons .btn::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 120%;
-      height: 120%;
-      background: rgba(0,255,194,0.3);
-      border-radius: 50%;   /* okrągły ripple */
-      transform: translate(-50%, -50%) scale(0);
-      opacity: 0;
-      transition: transform 0.4s ease, opacity 0.4s ease;
-    }
-    .hero-buttons .btn:hover::after {
-      transform: translate(-50%, -50%) scale(1);
-      opacity: 0.4;
+    #hero-button:hover {
+      background-color: #00ffc2;
+      color: #000;
+      box-shadow: 0 0 25px #00ffc2;
     }
 
     /* ===========================================
         STOPKA
         =========================================== */
     footer {
-      padding: 1.5rem 1rem;
-      background-color: #111;
-      color: #aaa;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 48px;
+      background-color: rgba(0,0,0,0.7);
+      color: #888;
+      font-size: 0.85rem;
+      line-height: 48px;
       text-align: center;
-      font-size: 0.9rem;
-      margin-top: calc(100vh + 60px);
+      z-index: 10;
+      user-select: none;
     }
-    footer a {
-      color: #00ffc2;
-      text-decoration: none;
-    }
-    footer a:hover {
-      text-decoration: underline;
+
+    /* RESPONSYWNOŚĆ */
+    @media (max-width: 768px) {
+      .nav-list {
+        gap: 1rem;
+      }
+      header.hero .typewriter-container {
+        font-size: 1.8rem;
+      }
+      #hero-button {
+        padding: 0.5rem 2rem;
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
-
 <body>
-  <canvas id="fireCanvas"></canvas>
-
-  <canvas id="snowCanvas"></canvas>
-
-  <canvas id="sandCanvas"></canvas>
-
-  <div class="video-background">
-    <video
-      id="bg-video"
-      src="background.mp4"
-      autoplay
-      loop
-      playsinline
-      preload="auto"
-    ></video>
-  </div>
-
-  <div id="audio-overlay"></div>
-
+  <!-- Pasek nawigacyjny -->
   <nav>
-    <a href="index.html" class="nav-logo">DragonConfigs</a>
+    <a href="#" class="nav-logo">DragonConfigs</a>
     <ul class="nav-list">
-      <li class="active"><a href="index.html">Strona Główna</a></li>
-      <li><a href="Configi.html">Wszystko MC</a></li>
-      <li><a href="download.html">Pobierz</a></li>
-      <li><a href="https://discord.gg/pTXQpWgfaE" target="_blank">Kontakt</a></li>
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">Shop</a></li>
+      <li class="dropdown">
+        <a href="#">More &#x25BE;</a>
+        <ul class="dropdown-menu">
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">About</a></li>
+        </ul>
+      </li>
     </ul>
   </nav>
 
-  <header class="hero">
-    <div class="typewriter-container" id="hero-text-container">
-      <span id="typed-text"></span><span id="cursor">|</span>
+  <!-- Tło video -->
+  <div class="video-background">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="https://cdn.dragonconfigs.pl/videos/bg1.mp4" type="video/mp4" />
+      Twoja przeglądarka nie wspiera wideo.
+    </video>
+  </div>
+
+  <!-- Kanwy na efekty -->
+  <canvas id="fireCanvas"></canvas>
+  <canvas id="snowCanvas"></canvas>
+  <canvas id="sandCanvas"></canvas>
+
+  <!-- Przezroczysty overlay do odblokowania audio -->
+  <div id="audio-overlay" title="Kliknij, aby odblokować dźwięk"></div>
+
+  <!-- Hero - animowany tekst + przycisk -->
+  <header class="hero" aria-label="Witamy na DragonConfigs">
+    <div class="typewriter-container">
+      <span id="typed-text"></span><span id="cursor"></span>
     </div>
-    <p id="hero-subtitle">Twoje centrum cheatów i configów do Minecrafta</p>
-    <div class="hero-buttons">
-      <a href="Configi.html" class="btn">Zobacz Configi</a>
-    </div>
+    <button id="hero-button" tabindex="0">Shop Now</button>
   </header>
 
+  <!-- Stopka -->
   <footer>
-    <p>&copy; 2025 DragonConfigs | Made by XxvoltikxX</p>
-    <p><a href="https://minecraft.net" target="_blank" rel="noopener">Oficjalna strona Minecraft</a></p>
+    &copy; 2025 DragonConfigs. Wszystkie prawa zastrzeżone.
   </footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // 1) Ustawienie wideo tak, aby zaczynało się od 0:13
-      const bgVideo = document.getElementById('bg-video');
-      bgVideo.addEventListener('loadedmetadata', () => {
-        bgVideo.currentTime = 13;
-      });
+    // ANIMACJA PYŁKÓW (fireCanvas)
+    (() => {
+      const canvas = document.getElementById('fireCanvas');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let particles = [];
 
-      // 2) Overlay do odblokowania audio:
-      const overlay = document.getElementById('audio-overlay');
-      overlay.addEventListener('click', () => {
-        bgVideo.muted = false;
-        bgVideo.play().catch(() => {});
-        overlay.remove();
-      });
-
-      // 3) Inicjalizacja Web Audio API dla reakcji śniegu na muzykę
-      let audioContext, analyserNode, dataArray;
-      function initAudioAnalyser() {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const sourceNode = audioContext.createMediaElementSource(bgVideo);
-        analyserNode = audioContext.createAnalyser();
-        analyserNode.fftSize = 512;
-        sourceNode.connect(analyserNode);
-        analyserNode.connect(audioContext.destination);
-        dataArray = new Uint8Array(analyserNode.frequencyBinCount);
-      }
-      bgVideo.addEventListener('play', () => {
-        if (!audioContext) {
-          initAudioAnalyser();
-        }
-        audioContext.resume().catch(() => {});
-      });
-
-      // Pomocnicza funkcja losowania
-      function randBetween(min, max) {
-        return Math.random() * (max - min) + min;
+      function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight - 60;
+        canvas.width = width;
+        canvas.height = height;
       }
 
-      // 4) Floating Dust (unoszące się pyłki)
-      const fireCanvas = document.getElementById('fireCanvas');
-      const fireCtx = fireCanvas.getContext('2d');
-      let fireParticles = [];
-      const MAX_FIRE = 120;
-
-      function resizeFireCanvas() {
-        fireCanvas.width = window.innerWidth;
-        fireCanvas.height = window.innerHeight - 60;
-      }
-      window.addEventListener('resize', resizeFireCanvas);
-      resizeFireCanvas();
-
-      class FireParticle {
+      class Particle {
         constructor() {
           this.reset();
         }
         reset() {
-          this.x = randBetween(0, fireCanvas.width);
-          this.y = randBetween(fireCanvas.height, fireCanvas.height + 50);
-          this.velocityY = randBetween(-0.3, -1.0);
-          this.velocityX = randBetween(-0.2, 0.2);
-          this.size = randBetween(1, 3);
-          this.alpha = randBetween(0.1, 0.3);
-          this.decay = randBetween(0.0005, 0.0015);
-          const v = Math.floor(randBetween(200, 255));
-          this.color = rgba(${v}, ${v}, ${v}, ${this.alpha});
+          this.x = Math.random() * width;
+          this.y = height + Math.random() * 100;
+          this.size = 1 + Math.random() * 3;
+          this.speedY = 0.5 + Math.random() * 1.5;
+          this.speedX = (Math.random() - 0.5) * 0.4;
+          this.alpha = 0.1 + Math.random() * 0.3;
+          this.color = `rgba(255, ${Math.floor(100 + Math.random() * 155)}, 0, ${this.alpha})`;
         }
         update() {
-          this.y += this.velocityY;
-          this.x += this.velocityX;
-          this.alpha -= this.decay;
-          if (this.alpha < 0 || this.y < -this.size) {
+          this.y -= this.speedY;
+          this.x += this.speedX;
+          this.alpha -= 0.005;
+          if (this.alpha <= 0 || this.y < -10) {
             this.reset();
           }
         }
         draw() {
-          fireCtx.beginPath();
-          fireCtx.fillStyle = this.color.replace(/[\d\.]+\)$/g, ${this.alpha}));
-          fireCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          fireCtx.fill();
-          fireCtx.closePath();
+          ctx.beginPath();
+          ctx.fillStyle = this.color.replace(/[\d\.]+\)$/g, `${this.alpha})`);
+          ctx.shadowColor = 'rgba(255, 200, 50, 0.8)';
+          ctx.shadowBlur = 10;
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
         }
       }
 
-      function initFireParticles() {
-        fireParticles = [];
-        for (let i = 0; i < MAX_FIRE; i++) {
-          fireParticles.push(new FireParticle());
+      function initParticles(num = 100) {
+        particles = [];
+        for (let i = 0; i < num; i++) {
+          particles.push(new Particle());
         }
       }
-      initFireParticles();
 
-      function animateFire() {
-        fireCtx.clearRect(0, 0, fireCanvas.width, fireCanvas.height);
-        fireParticles.forEach(p => {
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
           p.update();
           p.draw();
         });
-        requestAnimationFrame(animateFire);
-      }
-      animateFire();
-
-      // 5) Bardzo gęsta burza śnieżna (Snowstorm) reagująca na muzykę
-      const snowCanvas = document.getElementById('snowCanvas');
-      const snowCtx = snowCanvas.getContext('2d');
-      let snowflakes = [];
-      const MAX_SNOW = 1200;
-
-      function resizeSnowCanvas() {
-        snowCanvas.width = window.innerWidth;
-        snowCanvas.height = window.innerHeight - 60;
-      }
-      window.addEventListener('resize', resizeSnowCanvas);
-      resizeSnowCanvas();
-
-      class Snowflake {
-        constructor() {
-          this.reset(true);
-        }
-        reset(isInitial = false) {
-          if (isInitial) {
-            this.x = randBetween(0, snowCanvas.width);
-            this.y = randBetween(0, snowCanvas.height);
-          } else {
-            this.x = randBetween(0, snowCanvas.width);
-            this.y = randBetween(-50, -10);
-          }
-          this.size = randBetween(1.5, 4);
-          this.baseSpeedY = randBetween(2, 4);
-          this.speedX = randBetween(-1.5, 1.5);
-          this.alpha = randBetween(0.3, 1);
-        }
-        update(amplitudeFactor) {
-          this.y += this.baseSpeedY * amplitudeFactor;
-          this.x += this.speedX * (amplitudeFactor * 0.5);
-          if (this.y > snowCanvas.height) {
-            this.reset(false);
-          }
-          if (this.x < 0 || this.x > snowCanvas.width) {
-            this.x = randBetween(0, snowCanvas.width);
-          }
-        }
-        draw() {
-          snowCtx.beginPath();
-          snowCtx.fillStyle = rgba(255, 255, 255, ${this.alpha});
-          snowCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          snowCtx.fill();
-          snowCtx.closePath();
-        }
+        requestAnimationFrame(animate);
       }
 
-      function initSnowflakes() {
-        snowflakes = [];
-        for (let i = 0; i < MAX_SNOW; i++) {
-          snowflakes.push(new Snowflake());
-        }
-      }
-      initSnowflakes();
-
-      function animateSnow() {
-        let amplitudeFactor = 1;
-        if (analyserNode) {
-          analyserNode.getByteFrequencyData(dataArray);
-          let sum = 0;
-          for (let i = 0; i < dataArray.length; i++) {
-            sum += dataArray[i];
-          }
-          const avg = sum / dataArray.length;
-          amplitudeFactor = 0.5 + (avg / 255);
-        }
-        snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
-        snowflakes.forEach(f => {
-          f.update(amplitudeFactor);
-          f.draw();
-        });
-        requestAnimationFrame(animateSnow);
-      }
-      animateSnow();
-
-      // 6) Efekt burzy piaskowej (Sandstorm)
-      const sandCanvas = document.getElementById('sandCanvas');
-      const sandCtx = sandCanvas.getContext('2d');
-      let sandParticles = [];
-      const MAX_SAND = 800;
-
-      function resizeSandCanvas() {
-        sandCanvas.width = window.innerWidth;
-        sandCanvas.height = window.innerHeight - 60;
-      }
-      window.addEventListener('resize', resizeSandCanvas);
-      resizeSandCanvas();
-
-      class SandParticle {
-        constructor() {
-          this.reset(true);
-        }
-        reset(isInitial = false) {
-          if (isInitial) {
-            this.x = randBetween(0, sandCanvas.width);
-            this.y = randBetween(0, sandCanvas.height);
-          } else {
-            this.x = randBetween(-50, -10);
-            this.y = randBetween(0, sandCanvas.height);
-          }
-          this.size = randBetween(1, 3);
-          this.speedX = randBetween(3, 6);
-          this.speedY = randBetween(-1, 1);
-          const gray = Math.floor(randBetween(180, 220));
-          this.color = rgba(${gray + 30}, ${gray + 30}, ${gray - 50}, ${randBetween(0.15, 0.4)});
-        }
-        update() {
-          this.x += this.speedX;
-          this.y += this.speedY;
-          if (this.x > sandCanvas.width + this.size) {
-            this.reset(false);
-          }
-          if (this.y < 0) this.y = 0;
-          if (this.y > sandCanvas.height) this.y = sandCanvas.height;
-        }
-        draw() {
-          sandCtx.beginPath();
-          sandCtx.fillStyle = this.color;
-          sandCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          sandCtx.fill();
-          sandCtx.closePath();
-        }
-      }
-
-      function initSandParticles() {
-        sandParticles = [];
-        for (let i = 0; i < MAX_SAND; i++) {
-          sandParticles.push(new SandParticle());
-        }
-      }
-      initSandParticles();
-
-      function animateSand() {
-        sandCtx.clearRect(0, 0, sandCanvas.width, sandCanvas.height);
-        sandParticles.forEach(p => {
-          p.update();
-          p.draw();
-        });
-        requestAnimationFrame(animateSand);
-      }
-      animateSand();
-
-      // 7) Efekt „maszynopis” w hero
-      const typedTextSpan = document.getElementById('typed-text');
-      const cursorSpan = document.getElementById('cursor');
-      const textToType = 'Witaj na stronie DragonConfigs';
-      const typingSpeed = 120;    // ms między literami
-      const erasingSpeed = 60;    // ms między usuwanymi literami
-      const newTextDelay = 1500; // ms pauzy po wpisaniu
-      let charIndex = 0;
-      let isErasing = false;
-
-      function typeEffect() {
-        if (!isErasing) {
-          if (charIndex < textToType.length) {
-            typedTextSpan.textContent += textToType.charAt(charIndex);
-            charIndex++;
-            setTimeout(typeEffect, typingSpeed);
-          } else {
-            setTimeout(() => {
-              isErasing = true;
-              setTimeout(typeEffect, erasingSpeed);
-            }, newTextDelay);
-          }
-        } else {
-          if (charIndex > 0) {
-            typedTextSpan.textContent = textToType.substring(0, charIndex - 1);
-            charIndex--;
-            setTimeout(typeEffect, erasingSpeed);
-          } else {
-            isErasing = false;
-            setTimeout(typeEffect, typingSpeed);
-          }
-        }
-      }
-      setTimeout(typeEffect, newTextDelay);
-
-      // 8) Parallax scroll efekt na hero-text
-      const heroContainer = document.getElementById('hero-text-container');
-      const heroSubtitle = document.getElementById('hero-subtitle');
-      window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-        heroContainer.style.transform = translateY(${scrollY * 0.2}px);
-        heroSubtitle.style.transform = translateY(${scrollY * 0.15}px);
+      window.addEventListener('resize', () => {
+        resize();
+        initParticles(120);
       });
-    });
+
+      resize();
+      initParticles(120);
+      animate();
+    })();
+
+    // TYPING EFFECT (typewriter) dla napisu w hero
+    (() => {
+      const text = "DragonConfigs - najlepsze konfiguracje do Minecraft!";
+      const typedText = document.getElementById('typed-text');
+      const cursor = document.getElementById('cursor');
+
+      let index = 0;
+
+      function type() {
+        if (index <= text.length) {
+          typedText.textContent = text.substring(0, index);
+          typedText.classList.add('visible');
+          index++;
+          setTimeout(type, 80 + Math.random() * 100);
+        } else {
+          // Po napisaniu całego tekstu zatrzymujemy kursor
+          cursor.style.animation = 'none';
+          cursor.style.opacity = '0';
+        }
+      }
+
+      // Opóźnienie startu animacji dla efektu ładowania strony
+      window.addEventListener('load', () => {
+        setTimeout(type, 500);
+      });
+    })();
+
+    // AUDIO OVERLAY do odblokowania dźwięku (kliknięcie)
+    (() => {
+      const overlay = document.getElementById('audio-overlay');
+      function unlockAudio() {
+        const ctx = new AudioContext();
+        if (ctx.state === 'suspended') {
+          ctx.resume();
+        }
+        overlay.style.display = 'none';
+        window.removeEventListener('click', unlockAudio);
+      }
+      window.addEventListener('click', unlockAudio);
+    })();
+
   </script>
 </body>
 </html>
