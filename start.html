@@ -53,7 +53,7 @@
       display: flex;
       align-items: center;
       padding: 0 1rem;
-      z-index: 10;
+      z-index: 15; /* Najwyżej */
     }
     .nav-logo {
       font-size: 1.5rem;
@@ -103,7 +103,7 @@
       border-radius: 4px;
       list-style: none;
       padding: 0.5rem 0;
-      z-index: 11;
+      z-index: 16;
     }
     .dropdown:hover .dropdown-menu {
       display: block;
@@ -134,7 +134,7 @@
       width: 100vw;
       height: calc(100vh - 60px);
       pointer-events: none;
-      z-index: 2; /* nad wideo, pod śniegiem */
+      z-index: 5; /* NAD wideo */
     }
 
     /* ===========================================
@@ -147,7 +147,7 @@
       width: 100vw;
       height: calc(100vh - 60px);
       pointer-events: none;
-      z-index: 3; /* nad fireCanvas, pod burzą piaskową */
+      z-index: 6; /* NAD fireCanvas */
     }
 
     /* ===========================================
@@ -160,7 +160,7 @@
       width: 100vw;
       height: calc(100vh - 60px);
       pointer-events: none;
-      z-index: 4; /* nad śniegiem, pod overlayem */
+      z-index: 7; /* NAD snowCanvas */
     }
 
     /* ===========================================
@@ -175,7 +175,7 @@
       width: 100vw;
       height: calc(100vh - 60px);
       overflow: hidden;
-      z-index: 0; /* najniżej */
+      z-index: 0; /* NAJNIŻEJ */
     }
     .video-background video {
       position: absolute;
@@ -199,7 +199,7 @@
       width: 100vw;
       height: calc(100vh - 60px);
       background-color: rgba(0,0,0,0); /* całkowicie przezroczyste */
-      z-index: 5;
+      z-index: 8; /* Nad canvasami i wideo */
       cursor: pointer;
     }
 
@@ -218,7 +218,7 @@
       align-items: center;
       text-align: center;
       color: #fff;
-      z-index: 6; /* nad wszystkimi efektami */
+      z-index: 10; /* NAD wszystkimi efektami */
       pointer-events: none; /* aby scroll/parallax działał */
     }
     .typewriter-container {
@@ -250,38 +250,50 @@
     #typed-text.visible {
       opacity: 1;
     }
-    #cursor {
+    #typing-cursor {
       display: inline-block;
-      width: 2px;
+      margin-left: 0.2rem;
+      width: 0.1rem;
       height: 2.5rem;
       background-color: #00ffc2;
-      margin-left: 5px;
-      animation: blink 1s steps(1) infinite;
+      animation: blink 1s infinite step-start;
     }
     @keyframes blink {
       0%, 50% { opacity: 1; }
-      50.01%, 100% { opacity: 0; }
+      51%, 100% { opacity: 0; }
     }
 
-    /* PRZYCISK W HERO */
-    #hero-button {
+    /* PRZYCISK */
+    #explore-button {
       margin-top: 2rem;
-      padding: 0.75rem 3rem;
-      border-radius: 30px;
+      font-size: 1.3rem;
       font-weight: 700;
-      font-size: 1.2rem;
-      border: 2px solid #00ffc2;
-      background-color: transparent;
-      color: #00ffc2;
+      color: #fff;
+      background: linear-gradient(
+        270deg,
+        #00ffc2,
+        #0096ff,
+        #ff1aff,
+        #ff0000,
+        #ffee00
+      );
+      background-size: 500% 500%;
+      border: none;
+      border-radius: 25px;
+      padding: 0.75rem 3rem;
       cursor: pointer;
-      pointer-events: auto; /* przycisk klikalny */
-      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0 0 15px #00ffc2;
+      box-shadow:
+        0 0 10px #00ffc2,
+        0 0 20px #0096ff,
+        0 0 30px #ff1aff,
+        0 0 40px #ff0000,
+        0 0 50px #ffee00;
+      animation: gradient-wave 5s ease infinite;
+      transition: filter 0.3s ease;
+      pointer-events: auto;
     }
-    #hero-button:hover {
-      background-color: #00ffc2;
-      color: #000;
-      box-shadow: 0 0 25px #00ffc2;
+    #explore-button:hover {
+      filter: brightness(1.2);
     }
 
     /* ===========================================
@@ -291,191 +303,111 @@
       position: fixed;
       bottom: 0;
       left: 0;
-      width: 100vw;
-      height: 48px;
-      background-color: rgba(0,0,0,0.7);
-      color: #888;
-      font-size: 0.85rem;
-      line-height: 48px;
+      width: 100%;
+      height: 50px;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: #ccc;
       text-align: center;
-      z-index: 10;
-      user-select: none;
-    }
-
-    /* RESPONSYWNOŚĆ */
-    @media (max-width: 768px) {
-      .nav-list {
-        gap: 1rem;
-      }
-      header.hero .typewriter-container {
-        font-size: 1.8rem;
-      }
-      #hero-button {
-        padding: 0.5rem 2rem;
-        font-size: 1rem;
-      }
+      line-height: 50px;
+      font-size: 0.9rem;
+      z-index: 15;
     }
   </style>
 </head>
 <body>
-  <!-- Pasek nawigacyjny -->
   <nav>
-    <a href="#" class="nav-logo">DragonConfigs</a>
+    <a href="/" class="nav-logo">DragonConfigs</a>
     <ul class="nav-list">
-      <li class="active"><a href="#">Home</a></li>
-      <li><a href="#">Shop</a></li>
+      <li class="active"><a href="/">Home</a></li>
+      <li><a href="/store">Store</a></li>
       <li class="dropdown">
-        <a href="#">More &#x25BE;</a>
+        <a href="#">Services</a>
         <ul class="dropdown-menu">
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">About</a></li>
+          <li><a href="/services/altmanager">Alt Manager</a></li>
+          <li><a href="/services/customclient">Custom Client</a></li>
         </ul>
       </li>
+      <li><a href="/contact">Contact</a></li>
     </ul>
   </nav>
 
-  <!-- Tło video -->
+  <!-- TŁO WIDEO -->
   <div class="video-background">
-    <video autoplay muted loop playsinline preload="auto">
-      <source src="https://cdn.dragonconfigs.pl/videos/bg1.mp4" type="video/mp4" />
-      Twoja przeglądarka nie wspiera wideo.
+    <video autoplay loop muted playsinline>
+      <source src="/videos/video-background-3.webm" type="video/webm" />
+      <source src="/videos/video-background-3.mp4" type="video/mp4" />
+      Twój przeglądarka nie obsługuje wideo HTML5.
     </video>
   </div>
 
-  <!-- Kanwy na efekty -->
+  <!-- CANVASY EFEKTÓW -->
   <canvas id="fireCanvas"></canvas>
   <canvas id="snowCanvas"></canvas>
   <canvas id="sandCanvas"></canvas>
 
-  <!-- Przezroczysty overlay do odblokowania audio -->
-  <div id="audio-overlay" title="Kliknij, aby odblokować dźwięk"></div>
+  <!-- NAKŁADKA DO ODPOWIEDNIEGO ODPOWIADANIA NA KLIK I ODPOBLKOWANIE AUDIO -->
+  <div id="audio-overlay"></div>
 
-  <!-- Hero - animowany tekst + przycisk -->
-  <header class="hero" aria-label="Witamy na DragonConfigs">
+  <!-- HERO -->
+  <header class="hero">
     <div class="typewriter-container">
-      <span id="typed-text"></span><span id="cursor"></span>
+      <span id="typed-text"></span><span id="typing-cursor"></span>
     </div>
-    <button id="hero-button" tabindex="0">Shop Now</button>
+    <button id="explore-button" onclick="scrollToSection()">Explore Configs</button>
   </header>
 
-  <!-- Stopka -->
+  <!-- STOPKA -->
   <footer>
     &copy; 2025 DragonConfigs. Wszystkie prawa zastrzeżone.
   </footer>
 
   <script>
-    // ANIMACJA PYŁKÓW (fireCanvas)
-    (() => {
-      const canvas = document.getElementById('fireCanvas');
-      const ctx = canvas.getContext('2d');
-      let width, height;
-      let particles = [];
+    // Efekt pisania tekstu
+    const texts = [
+      "Witamy na DragonConfigs",
+      "Twoje miejsce na najlepsze konfiguracje Minecraft",
+      "Sprawdź naszą ofertę i usługi!"
+    ];
+    const typedTextElement = document.getElementById('typed-text');
+    let charIndex = 0;
+    let textIndex = 0;
+    let typingDelay = 70;
+    let erasingDelay = 30;
+    let newTextDelay = 2000; // czas po wyświetleniu tekstu
 
-      function resize() {
-        width = window.innerWidth;
-        height = window.innerHeight - 60;
-        canvas.width = width;
-        canvas.height = height;
+    function type() {
+      if (charIndex < texts[textIndex].length) {
+        typedTextElement.textContent += texts[textIndex].charAt(charIndex);
+        charIndex++;
+        typedTextElement.classList.add('visible');
+        setTimeout(type, typingDelay);
+      } else {
+        setTimeout(erase, newTextDelay);
       }
-
-      class Particle {
-        constructor() {
-          this.reset();
-        }
-        reset() {
-          this.x = Math.random() * width;
-          this.y = height + Math.random() * 100;
-          this.size = 1 + Math.random() * 3;
-          this.speedY = 0.5 + Math.random() * 1.5;
-          this.speedX = (Math.random() - 0.5) * 0.4;
-          this.alpha = 0.1 + Math.random() * 0.3;
-          this.color = `rgba(255, ${Math.floor(100 + Math.random() * 155)}, 0, ${this.alpha})`;
-        }
-        update() {
-          this.y -= this.speedY;
-          this.x += this.speedX;
-          this.alpha -= 0.005;
-          if (this.alpha <= 0 || this.y < -10) {
-            this.reset();
-          }
-        }
-        draw() {
-          ctx.beginPath();
-          ctx.fillStyle = this.color.replace(/[\d\.]+\)$/g, `${this.alpha})`);
-          ctx.shadowColor = 'rgba(255, 200, 50, 0.8)';
-          ctx.shadowBlur = 10;
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fill();
-        }
+    }
+    function erase() {
+      if (charIndex > 0) {
+        typedTextElement.textContent = texts[textIndex].substring(0, charIndex - 1);
+        charIndex--;
+        setTimeout(erase, erasingDelay);
+      } else {
+        textIndex++;
+        if (textIndex >= texts.length) textIndex = 0;
+        setTimeout(type, typingDelay + 1100);
       }
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      if(texts.length) setTimeout(type, newTextDelay + 250);
+    });
 
-      function initParticles(num = 100) {
-        particles = [];
-        for (let i = 0; i < num; i++) {
-          particles.push(new Particle());
-        }
-      }
+    // Scroll po kliknięciu przycisku
+    function scrollToSection() {
+      // Tu możesz zmienić, gdzie chcesz scrollować, np. do sekcji ofertowej
+      window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+    }
 
-      function animate() {
-        ctx.clearRect(0, 0, width, height);
-        particles.forEach(p => {
-          p.update();
-          p.draw();
-        });
-        requestAnimationFrame(animate);
-      }
-
-      window.addEventListener('resize', () => {
-        resize();
-        initParticles(120);
-      });
-
-      resize();
-      initParticles(120);
-      animate();
-    })();
-
-    // TYPING EFFECT (typewriter) dla napisu w hero
-    (() => {
-      const text = "DragonConfigs - najlepsze konfiguracje do Minecraft!";
-      const typedText = document.getElementById('typed-text');
-      const cursor = document.getElementById('cursor');
-
-      let index = 0;
-
-      function type() {
-        if (index <= text.length) {
-          typedText.textContent = text.substring(0, index);
-          typedText.classList.add('visible');
-          index++;
-          setTimeout(type, 80 + Math.random() * 100);
-        } else {
-          // Po napisaniu całego tekstu zatrzymujemy kursor
-          cursor.style.animation = 'none';
-          cursor.style.opacity = '0';
-        }
-      }
-
-      // Opóźnienie startu animacji dla efektu ładowania strony
-      window.addEventListener('load', () => {
-        setTimeout(type, 500);
-      });
-    })();
-
-    // AUDIO OVERLAY do odblokowania dźwięku (kliknięcie)
-    (() => {
-      const overlay = document.getElementById('audio-overlay');
-      function unlockAudio() {
-        const ctx = new AudioContext();
-        if (ctx.state === 'suspended') {
-          ctx.resume();
-        }
-        overlay.style.display = 'none';
-        window.removeEventListener('click', unlockAudio);
-      }
-      window.addEventListener('click', unlockAudio);
-    })();
+    // Tu możesz dodać inicjalizację efektów canvas (fire, snow, sand)
+    // żeby canvasy działały prawidłowo i animowały się.
 
   </script>
 </body>
