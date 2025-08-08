@@ -257,130 +257,99 @@
       0%, 50% { opacity: 1; }
       51%, 100% { opacity: 0; }
     }
-    .btn-explore {
-      margin-top: 2rem;
-      padding: 1rem 3rem;
-      border-radius: 40px;
-      font-weight: 700;
-      font-size: 1.25rem;
-      text-transform: uppercase;
-      color: #fff;
-      background: linear-gradient(45deg, #07c9b9, #00bfff, #ff00ff, #ff0055, #ffee00);
-      background-size: 300% 300%;
-      border: none;
-      cursor: pointer;
-      user-select: none;
-      box-shadow: 0 0 10px #00ffc2;
-      animation: gradient-wave 1.5s ease-in-out infinite;
-      pointer-events: auto; /* włącz interakcję */
-      transition: transform 0.3s ease;
-      font-family: 'Poppins', sans-serif;
-    }
-    .btn-explore:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px #00ffc2;
-    }
+
   </style>
 </head>
 <body>
-
   <nav>
-    <a href="https://dragonconfigs.pl" class="nav-logo" title="DragonConfigs">
-      DragonConfigs
-    </a>
+    <a href="/" class="nav-logo">DragonConfigs</a>
     <ul class="nav-list">
-      <li class="active"><a href="#">Home</a></li>
+      <li class="active"><a href="/">Strona główna</a></li>
       <li class="dropdown">
-        <a href="#">Config Panel ▼</a>
+        <a href="#">Menu ▼</a>
         <ul class="dropdown-menu">
-          <li><a href="https://dragonconfigs.pl/configs">Configs List</a></li>
-          <li><a href="https://dragonconfigs.pl/guides">Guides</a></li>
-          <li><a href="https://dragonconfigs.pl/support">Support</a></li>
+          <li><a href="/cofanie.html">Cofanie</a></li>
+          <li><a href="/legit.html">Legit</a></li>
+          <li><a href="/spin.html">Spin</a></li>
+          <li><a href="/auto-farm.html">AutoFarm</a></li>
+          <li><a href="/auto-clicker.html">AutoClicker</a></li>
+          <li><a href="/fast-mine.html">FastMine</a></li>
+          <li><a href="/notifications.html">Notifications</a></li>
+          <li><a href="/godmode.html">GodMode</a></li>
+          <li><a href="/vanish.html">Vanish</a></li>
+          <li><a href="/speed.html">Speed</a></li>
+          <li><a href="/reach.html">Reach</a></li>
+          <li><a href="/safe-walk.html">SafeWalk</a></li>
+          <li><a href="/chams.html">Chams</a></li>
+          <li><a href="/xray.html">Xray</a></li>
+          <li><a href="/esp.html">ESP</a></li>
+          <li><a href="/anti-kb.html">Anti KB</a></li>
+          <li><a href="/anti-afk.html">Anti AFK</a></li>
+          <li><a href="/auto-mine.html">AutoMine</a></li>
+          <li><a href="/step.html">Step</a></li>
+          <li><a href="/anti-fall.html">AntiFall</a></li>
+          <li><a href="/scaffold.html">Scaffold</a></li>
+          <li><a href="/chest-stealer.html">ChestStealer</a></li>
+          <li><a href="/fast-place.html">FastPlace</a></li>
+          <li><a href="/no-hunger.html">No Hunger</a></li>
+          <li><a href="/sprint.html">Sprint</a></li>
+          <li><a href="/auto-tool.html">AutoTool</a></li>
+          <li><a href="/aimbot.html">Aimbot</a></li>
+          <li><a href="/anti-lag.html">Anti Lag</a></li>
+          <li><a href="/anti-bot.html">Anti Bot</a></li>
+          <li><a href="/no-clip.html">NoClip</a></li>
+          <li><a href="/flight.html">Flight</a></li>
+          <li><a href="/anti-void.html">Anti Void</a></li>
         </ul>
       </li>
-      <li><a href="https://discord.gg/dragonconfigs" target="_blank" rel="noopener">Discord</a></li>
-      <li><a href="https://dragonconfigs.pl/about">About</a></li>
+      <li><a href="/video.html">Video</a></li>
+      <li><a href="/contact.html">Kontakt</a></li>
     </ul>
   </nav>
+
+  <div class="video-background">
+    <video autoplay muted loop playsinline preload="auto" poster="/assets/video/og-image.png" id="background-video">
+      <source src="/assets/video/dragonconfigs.mp4" type="video/mp4" />
+      Twoja przeglądarka nie obsługuje elementu wideo.
+    </video>
+  </div>
 
   <canvas id="fireCanvas"></canvas>
   <canvas id="snowCanvas"></canvas>
   <canvas id="sandCanvas"></canvas>
 
-  <div class="video-background">
-    <video
-      id="background-video"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="auto"
-      poster="poster.jpg"
-      crossorigin="anonymous"
-    >
-      <source src="https://dragonconfigs.pl/video/bg3.mp4" type="video/mp4" />
-      Twój przeglądarka nie wspiera elementu video.
-    </video>
-  </div>
-
   <div id="audio-overlay" title="Kliknij, aby odblokować dźwięk"></div>
 
-  <header class="hero">
-    <div class="typewriter-container">
-      <span id="typed-text"></span>
-      <span class="cursor"></span>
+  <header class="hero" aria-label="Witamy na DragonConfigs">
+    <div class="typewriter-container" aria-live="polite" aria-atomic="true">
+      <span id="typed-text"></span><span class="cursor"></span>
     </div>
-    <button class="btn-explore" onclick="window.location.href='https://dragonconfigs.pl/configs'">
-      Explore Configs
-    </button>
   </header>
 
   <script>
-    // Efekt pisania (typewriter) z dynamicznym tekstem
-    const text = "Hello DragonConfigs!";
-    const typedTextSpan = document.getElementById("typed-text");
-    const cursorSpan = document.querySelector(".cursor");
+    // Efekt pisania na stronie startowej
+    const text = "Witaj na DragonConfigs";
+    const typedTextSpan = document.getElementById('typed-text');
     let index = 0;
-    let isDeleting = false;
 
     function typeWriter() {
-      if (!isDeleting) {
-        typedTextSpan.textContent = text.substring(0, index + 1);
+      if (index < text.length) {
+        typedTextSpan.textContent += text.charAt(index);
         index++;
-        if (index === text.length) {
-          isDeleting = true;
-          setTimeout(typeWriter, 1200);
-          return;
-        }
-      } else {
-        typedTextSpan.textContent = text.substring(0, index - 1);
-        index--;
-        if (index === 0) {
-          isDeleting = false;
-          setTimeout(typeWriter, 200);
-          return;
-        }
+        setTimeout(typeWriter, 80);
       }
-      setTimeout(typeWriter, isDeleting ? 50 : 100);
     }
+    typeWriter();
 
-    document.addEventListener("DOMContentLoaded", () => {
-      typeWriter();
-    });
-
-    // Odblokowanie audio przez kliknięcie na overlay
-    const audioOverlay = document.getElementById("audio-overlay");
-    audioOverlay.addEventListener("click", () => {
-      const video = document.getElementById("background-video");
+    // Odblokowanie dźwięku - na mobile/desktop
+    const audioOverlay = document.getElementById('audio-overlay');
+    audioOverlay.addEventListener('click', () => {
+      const video = document.getElementById('background-video');
       if (video.paused) {
-        video.play();
+        video.play().catch(e => console.log('Błąd odtwarzania wideo:', e));
       }
-      audioOverlay.style.display = "none"; // po kliknięciu znikamy overlay
+      audioOverlay.style.display = 'none'; // po kliknięciu ukryj overlay
     });
-
-    // Canvasy i efekty (fire, snow, sand) – możesz dodać osobno
-    // (Puste na razie, jeśli chcesz, mogę pomóc zrobić jakieś animacje)
   </script>
-
 </body>
 </html>
