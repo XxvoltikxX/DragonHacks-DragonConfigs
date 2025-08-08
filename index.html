@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ekran powitalny</title>
+  <style>
+    body, html {
+      margin: 0; padding: 0; height: 100%; background: black; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; color: white;
+      font-family: Arial, sans-serif; flex-direction: column;
+    }
+    button {
+      margin-top: 20px; padding: 15px 30px; font-size: 18px;
+      cursor: pointer; border: none; border-radius: 8px;
+      background: #ff4444; color: white; transition: 0.3s;
+    }
+    button:hover {
+      background: #cc0000;
+    }
+  </style>
+</head>
+<body>
+  <h1>Witamy na stronie</h1>
+  <p>Kliknij, aby rozpocząć</p>
+  <button id="startBtn">Wejdź</button>
+
+  <script>
+    document.getElementById('startBtn').addEventListener('click', () => {
+      window.location.href = "start.html";
+    });
+  </script>
+</body>
+</html>
