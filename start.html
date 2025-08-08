@@ -252,162 +252,299 @@
     }
     #typing-cursor {
       display: inline-block;
-      margin-left: 0.2rem;
-      width: 0.1rem;
-      height: 2.5rem;
-      background-color: #00ffc2;
-      animation: blink 1s infinite step-start;
+      width: 2px;
+      height: 2.8rem;
+      background-color: #00ffcc;
+      margin-left: 6px;
+      animation: blink 1s infinite;
     }
     @keyframes blink {
       0%, 50% { opacity: 1; }
       51%, 100% { opacity: 0; }
     }
 
-    /* PRZYCISK */
+    /* PRZYCISK „Explore Configs” */
     #explore-button {
-      margin-top: 2rem;
+      margin-top: 40px;
+      padding: 1rem 3rem;
       font-size: 1.3rem;
       font-weight: 700;
       color: #fff;
       background: linear-gradient(
-        270deg,
-        #00ffc2,
-        #0096ff,
-        #ff1aff,
-        #ff0000,
-        #ffee00
+        45deg,
+        #00ffc2 0%,
+        #00bfff 25%,
+        #ff00ff 50%,
+        #ff0055 75%,
+        #ffee00 100%
       );
-      background-size: 500% 500%;
+      background-size: 200% 200%;
       border: none;
-      border-radius: 25px;
-      padding: 0.75rem 3rem;
+      border-radius: 30px;
       cursor: pointer;
-      box-shadow:
-        0 0 10px #00ffc2,
-        0 0 20px #0096ff,
-        0 0 30px #ff1aff,
-        0 0 40px #ff0000,
-        0 0 50px #ffee00;
-      animation: gradient-wave 5s ease infinite;
-      transition: filter 0.3s ease;
-      pointer-events: auto;
+      box-shadow: 0 0 12px #00ffc2;
+      transition: background-position 1.5s ease-in-out, box-shadow 0.3s ease;
+      pointer-events: auto; /* aby przycisk był klikalny */
     }
     #explore-button:hover {
-      filter: brightness(1.2);
+      background-position: 100% 50%;
+      box-shadow: 0 0 24px #00ffc2;
+    }
+    #explore-button:active {
+      transform: scale(0.95);
+      box-shadow: 0 0 12px #00ffc2 inset;
     }
 
-    /* ===========================================
-        STOPKA
-        =========================================== */
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 50px;
-      background-color: rgba(0, 0, 0, 0.8);
-      color: #ccc;
-      text-align: center;
-      line-height: 50px;
-      font-size: 0.9rem;
-      z-index: 15;
-    }
   </style>
 </head>
 <body>
   <nav>
-    <a href="/" class="nav-logo">DragonConfigs</a>
+    <a href="#" class="nav-logo">DragonConfigs</a>
     <ul class="nav-list">
-      <li class="active"><a href="/">Home</a></li>
-      <li><a href="/store">Store</a></li>
+      <li class="active"><a href="#">Home</a></li>
       <li class="dropdown">
-        <a href="#">Services</a>
+        <a href="#">About</a>
         <ul class="dropdown-menu">
-          <li><a href="/services/altmanager">Alt Manager</a></li>
-          <li><a href="/services/customclient">Custom Client</a></li>
+          <li><a href="#">Team</a></li>
+          <li><a href="#">History</a></li>
+          <li><a href="#">Vision</a></li>
         </ul>
       </li>
-      <li><a href="/contact">Contact</a></li>
+      <li><a href="#">Gallery</a></li>
+      <li><a href="#">Other</a></li>
     </ul>
   </nav>
 
-  <!-- TŁO WIDEO -->
-  <div class="video-background">
-    <video autoplay loop muted playsinline>
-      <source src="/videos/video-background-3.webm" type="video/webm" />
-      <source src="/videos/video-background-3.mp4" type="video/mp4" />
-      Twój przeglądarka nie obsługuje wideo HTML5.
-    </video>
-  </div>
-
-  <!-- CANVASY EFEKTÓW -->
+  <!-- CANVASY -->
   <canvas id="fireCanvas"></canvas>
   <canvas id="snowCanvas"></canvas>
   <canvas id="sandCanvas"></canvas>
 
-  <!-- NAKŁADKA DO ODPOWIEDNIEGO ODPOWIADANIA NA KLIK I ODPOBLKOWANIE AUDIO -->
-  <div id="audio-overlay"></div>
+  <!-- TŁO WIDEO -->
+  <div class="video-background">
+    <video autoplay loop muted playsinline>
+      <source src="https://cdn.dragonconfigs.pl/animacje/16.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
 
-  <!-- HERO -->
+  <!-- PRZEZROCZYSTY OVERLAY DO ODROZROBIENIA AUDIO -->
+  <div id="audio-overlay" title="Click to enable audio"></div>
+
+  <!-- HERO SEKCJA -->
   <header class="hero">
     <div class="typewriter-container">
       <span id="typed-text"></span><span id="typing-cursor"></span>
     </div>
-    <button id="explore-button" onclick="scrollToSection()">Explore Configs</button>
+    <button id="explore-button">Explore Configs</button>
   </header>
 
-  <!-- STOPKA -->
-  <footer>
-    &copy; 2025 DragonConfigs. Wszystkie prawa zastrzeżone.
-  </footer>
-
   <script>
-    // Efekt pisania tekstu
-    const texts = [
-      "Witamy na DragonConfigs",
-      "Twoje miejsce na najlepsze konfiguracje Minecraft",
-      "Sprawdź naszą ofertę i usługi!"
-    ];
-    const typedTextElement = document.getElementById('typed-text');
-    let charIndex = 0;
-    let textIndex = 0;
-    let typingDelay = 70;
-    let erasingDelay = 30;
-    let newTextDelay = 2000; // czas po wyświetleniu tekstu
+    // ==== TYPING ANIMATION ====
+    const text = "Welcome to DragonConfigs!";
+    const typedText = document.getElementById("typed-text");
+    let index = 0;
 
-    function type() {
-      if (charIndex < texts[textIndex].length) {
-        typedTextElement.textContent += texts[textIndex].charAt(charIndex);
-        charIndex++;
-        typedTextElement.classList.add('visible');
-        setTimeout(type, typingDelay);
+    function typeWriter() {
+      if (index < text.length) {
+        typedText.textContent += text.charAt(index);
+        index++;
+        setTimeout(typeWriter, 100); // prędkość pisania
       } else {
-        setTimeout(erase, newTextDelay);
+        typedText.classList.add("visible");
       }
     }
-    function erase() {
-      if (charIndex > 0) {
-        typedTextElement.textContent = texts[textIndex].substring(0, charIndex - 1);
-        charIndex--;
-        setTimeout(erase, erasingDelay);
-      } else {
-        textIndex++;
-        if (textIndex >= texts.length) textIndex = 0;
-        setTimeout(type, typingDelay + 1100);
-      }
-    }
-    document.addEventListener('DOMContentLoaded', function () {
-      if(texts.length) setTimeout(type, newTextDelay + 250);
+    window.onload = () => {
+      typeWriter();
+    };
+
+    // ==== PRZYCISK - Explore Configs ====
+    const exploreBtn = document.getElementById("explore-button");
+    exploreBtn.addEventListener("click", () => {
+      // Przykładowa akcja po kliknięciu - możesz zmienić na rzeczywistą nawigację
+      alert("Explore Configs clicked! Przekieruj na inną stronę lub otwórz modal.");
+      // lub np.
+      // window.location.href = "/configs.html";
     });
 
-    // Scroll po kliknięciu przycisku
-    function scrollToSection() {
-      // Tu możesz zmienić, gdzie chcesz scrollować, np. do sekcji ofertowej
-      window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+    // ==== CANVAS: Unoszące się pyłki (fireCanvas) ====
+    const fireCanvas = document.getElementById('fireCanvas');
+    const fireCtx = fireCanvas.getContext('2d');
+    let fireParticles = [];
+
+    function resizeCanvas(canvas) {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight - 60; // uwzględnia navbar
+    }
+    resizeCanvas(fireCanvas);
+    window.addEventListener('resize', () => {
+      resizeCanvas(fireCanvas);
+      resizeCanvas(snowCanvas);
+      resizeCanvas(sandCanvas);
+    });
+
+    class FireParticle {
+      constructor() {
+        this.x = Math.random() * fireCanvas.width;
+        this.y = fireCanvas.height + Math.random() * 50;
+        this.radius = 1 + Math.random() * 2;
+        this.speedY = 0.5 + Math.random() * 1;
+        this.alpha = 0.1 + Math.random() * 0.3;
+      }
+      update() {
+        this.y -= this.speedY;
+        this.alpha -= 0.005;
+        if (this.alpha <= 0 || this.y < 0) {
+          this.x = Math.random() * fireCanvas.width;
+          this.y = fireCanvas.height + Math.random() * 50;
+          this.alpha = 0.1 + Math.random() * 0.3;
+          this.radius = 1 + Math.random() * 2;
+          this.speedY = 0.5 + Math.random() * 1;
+        }
+      }
+      draw() {
+        fireCtx.beginPath();
+        fireCtx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+        fireCtx.shadowColor = 'rgba(0,255,255,0.5)';
+        fireCtx.shadowBlur = 4;
+        fireCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        fireCtx.fill();
+      }
     }
 
-    // Tu możesz dodać inicjalizację efektów canvas (fire, snow, sand)
-    // żeby canvasy działały prawidłowo i animowały się.
+    function initFireParticles() {
+      fireParticles = [];
+      for (let i = 0; i < 120; i++) {
+        fireParticles.push(new FireParticle());
+      }
+    }
+    initFireParticles();
+
+    function animateFire() {
+      fireCtx.clearRect(0, 0, fireCanvas.width, fireCanvas.height);
+      fireParticles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateFire);
+    }
+    animateFire();
+
+    // ==== CANVAS: Śnieg (snowCanvas) ====
+    const snowCanvas = document.getElementById('snowCanvas');
+    const snowCtx = snowCanvas.getContext('2d');
+    let snowParticles = [];
+
+    class SnowParticle {
+      constructor() {
+        this.x = Math.random() * snowCanvas.width;
+        this.y = Math.random() * snowCanvas.height;
+        this.radius = 1 + Math.random() * 3;
+        this.speedY = 0.5 + Math.random() * 1.5;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.alpha = 0.3 + Math.random() * 0.5;
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        if (this.y > snowCanvas.height) {
+          this.y = 0;
+          this.x = Math.random() * snowCanvas.width;
+        }
+        if (this.x > snowCanvas.width || this.x < 0) {
+          this.x = Math.random() * snowCanvas.width;
+        }
+      }
+      draw() {
+        snowCtx.beginPath();
+        snowCtx.fillStyle = `rgba(255,255,255,${this.alpha})`;
+        snowCtx.shadowColor = 'rgba(255,255,255,0.5)';
+        snowCtx.shadowBlur = 3;
+        snowCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        snowCtx.fill();
+      }
+    }
+
+    function initSnowParticles() {
+      snowParticles = [];
+      for (let i = 0; i < 500; i++) {
+        snowParticles.push(new SnowParticle());
+      }
+    }
+    initSnowParticles();
+
+    function animateSnow() {
+      snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+      snowParticles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateSnow);
+    }
+    animateSnow();
+
+    // ==== CANVAS: Burza piaskowa (sandCanvas) ====
+    const sandCanvas = document.getElementById('sandCanvas');
+    const sandCtx = sandCanvas.getContext('2d');
+    let sandParticles = [];
+
+    class SandParticle {
+      constructor() {
+        this.x = Math.random() * sandCanvas.width;
+        this.y = Math.random() * sandCanvas.height;
+        this.radius = 1 + Math.random() * 1.5;
+        this.speedY = 0.1 + Math.random() * 0.3;
+        this.speedX = 1 + Math.random() * 1.5;
+        this.alpha = 0.15 + Math.random() * 0.15;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x > sandCanvas.width) {
+          this.x = -10;
+          this.y = Math.random() * sandCanvas.height;
+        }
+        if (this.y > sandCanvas.height) {
+          this.y = 0;
+        }
+      }
+      draw() {
+        sandCtx.beginPath();
+        sandCtx.fillStyle = `rgba(255, 204, 102, ${this.alpha})`; // jasny piaskowy kolor
+        sandCtx.shadowColor = 'rgba(255, 204, 102, 0.3)';
+        sandCtx.shadowBlur = 2;
+        sandCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        sandCtx.fill();
+      }
+    }
+
+    function initSandParticles() {
+      sandParticles = [];
+      for (let i = 0; i < 150; i++) {
+        sandParticles.push(new SandParticle());
+      }
+    }
+    initSandParticles();
+
+    function animateSand() {
+      sandCtx.clearRect(0, 0, sandCanvas.width, sandCanvas.height);
+      sandParticles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateSand);
+    }
+    animateSand();
+
+    // ==== ODROZROBIENIE AUDIO ====
+    const audioOverlay = document.getElementById("audio-overlay");
+    const video = document.querySelector("video");
+    audioOverlay.addEventListener("click", () => {
+      if (video.muted) {
+        video.muted = false;
+        audioOverlay.style.display = "none";
+      }
+    });
 
   </script>
 </body>
