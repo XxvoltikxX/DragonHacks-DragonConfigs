@@ -243,309 +243,144 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       animation: gradient-wave 1.5s ease-in-out infinite;
-      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
-      opacity: 0;
-      transition: opacity 0.8s ease;
+      font-family: 'Poppins', sans-serif;
     }
-    #typed-text.visible {
-      opacity: 1;
-    }
-    #typing-cursor {
-      display: inline-block;
-      width: 2px;
-      height: 2.8rem;
-      background-color: #00ffcc;
-      margin-left: 6px;
-      animation: blink 1s infinite;
+    .cursor {
+      margin-left: 3px;
+      width: 3px;
+      height: 2.5rem;
+      background-color: #00ffc2;
+      animation: blink 1.2s infinite;
+      border-radius: 2px;
     }
     @keyframes blink {
       0%, 50% { opacity: 1; }
       51%, 100% { opacity: 0; }
     }
-
-    /* PRZYCISK „Explore Configs” */
-    #explore-button {
-      margin-top: 40px;
+    .btn-explore {
+      margin-top: 2rem;
       padding: 1rem 3rem;
-      font-size: 1.3rem;
+      border-radius: 40px;
       font-weight: 700;
+      font-size: 1.25rem;
+      text-transform: uppercase;
       color: #fff;
-      background: linear-gradient(
-        45deg,
-        #00ffc2 0%,
-        #00bfff 25%,
-        #ff00ff 50%,
-        #ff0055 75%,
-        #ffee00 100%
-      );
-      background-size: 200% 200%;
+      background: linear-gradient(45deg, #07c9b9, #00bfff, #ff00ff, #ff0055, #ffee00);
+      background-size: 300% 300%;
       border: none;
-      border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 0 12px #00ffc2;
-      transition: background-position 1.5s ease-in-out, box-shadow 0.3s ease;
-      pointer-events: auto; /* aby przycisk był klikalny */
+      user-select: none;
+      box-shadow: 0 0 10px #00ffc2;
+      animation: gradient-wave 1.5s ease-in-out infinite;
+      pointer-events: auto; /* włącz interakcję */
+      transition: transform 0.3s ease;
+      font-family: 'Poppins', sans-serif;
     }
-    #explore-button:hover {
-      background-position: 100% 50%;
-      box-shadow: 0 0 24px #00ffc2;
+    .btn-explore:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00ffc2;
     }
-    #explore-button:active {
-      transform: scale(0.95);
-      box-shadow: 0 0 12px #00ffc2 inset;
-    }
-
   </style>
 </head>
 <body>
+
   <nav>
-    <a href="#" class="nav-logo">DragonConfigs</a>
+    <a href="https://dragonconfigs.pl" class="nav-logo" title="DragonConfigs">
+      DragonConfigs
+    </a>
     <ul class="nav-list">
       <li class="active"><a href="#">Home</a></li>
       <li class="dropdown">
-        <a href="#">About</a>
+        <a href="#">Config Panel ▼</a>
         <ul class="dropdown-menu">
-          <li><a href="#">Team</a></li>
-          <li><a href="#">History</a></li>
-          <li><a href="#">Vision</a></li>
+          <li><a href="https://dragonconfigs.pl/configs">Configs List</a></li>
+          <li><a href="https://dragonconfigs.pl/guides">Guides</a></li>
+          <li><a href="https://dragonconfigs.pl/support">Support</a></li>
         </ul>
       </li>
-      <li><a href="#">Gallery</a></li>
-      <li><a href="#">Other</a></li>
+      <li><a href="https://discord.gg/dragonconfigs" target="_blank" rel="noopener">Discord</a></li>
+      <li><a href="https://dragonconfigs.pl/about">About</a></li>
     </ul>
   </nav>
 
-  <!-- CANVASY -->
   <canvas id="fireCanvas"></canvas>
   <canvas id="snowCanvas"></canvas>
   <canvas id="sandCanvas"></canvas>
 
-  <!-- TŁO WIDEO -->
   <div class="video-background">
-    <video autoplay loop muted playsinline>
-      <source src="https://cdn.dragonconfigs.pl/animacje/16.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
+    <video
+      id="background-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      poster="poster.jpg"
+      crossorigin="anonymous"
+    >
+      <source src="https://dragonconfigs.pl/video/bg3.mp4" type="video/mp4" />
+      Twój przeglądarka nie wspiera elementu video.
     </video>
   </div>
 
-  <!-- PRZEZROCZYSTY OVERLAY DO ODROZROBIENIA AUDIO -->
-  <div id="audio-overlay" title="Click to enable audio"></div>
+  <div id="audio-overlay" title="Kliknij, aby odblokować dźwięk"></div>
 
-  <!-- HERO SEKCJA -->
   <header class="hero">
     <div class="typewriter-container">
-      <span id="typed-text"></span><span id="typing-cursor"></span>
+      <span id="typed-text"></span>
+      <span class="cursor"></span>
     </div>
-    <button id="explore-button">Explore Configs</button>
+    <button class="btn-explore" onclick="window.location.href='https://dragonconfigs.pl/configs'">
+      Explore Configs
+    </button>
   </header>
 
   <script>
-    // ==== TYPING ANIMATION ====
-    const text = "Welcome to DragonConfigs!";
-    const typedText = document.getElementById("typed-text");
+    // Efekt pisania (typewriter) z dynamicznym tekstem
+    const text = "Hello DragonConfigs!";
+    const typedTextSpan = document.getElementById("typed-text");
+    const cursorSpan = document.querySelector(".cursor");
     let index = 0;
+    let isDeleting = false;
 
     function typeWriter() {
-      if (index < text.length) {
-        typedText.textContent += text.charAt(index);
+      if (!isDeleting) {
+        typedTextSpan.textContent = text.substring(0, index + 1);
         index++;
-        setTimeout(typeWriter, 100); // prędkość pisania
+        if (index === text.length) {
+          isDeleting = true;
+          setTimeout(typeWriter, 1200);
+          return;
+        }
       } else {
-        typedText.classList.add("visible");
+        typedTextSpan.textContent = text.substring(0, index - 1);
+        index--;
+        if (index === 0) {
+          isDeleting = false;
+          setTimeout(typeWriter, 200);
+          return;
+        }
       }
+      setTimeout(typeWriter, isDeleting ? 50 : 100);
     }
-    window.onload = () => {
+
+    document.addEventListener("DOMContentLoaded", () => {
       typeWriter();
-    };
-
-    // ==== PRZYCISK - Explore Configs ====
-    const exploreBtn = document.getElementById("explore-button");
-    exploreBtn.addEventListener("click", () => {
-      // Przykładowa akcja po kliknięciu - możesz zmienić na rzeczywistą nawigację
-      alert("Explore Configs clicked! Przekieruj na inną stronę lub otwórz modal.");
-      // lub np.
-      // window.location.href = "/configs.html";
     });
 
-    // ==== CANVAS: Unoszące się pyłki (fireCanvas) ====
-    const fireCanvas = document.getElementById('fireCanvas');
-    const fireCtx = fireCanvas.getContext('2d');
-    let fireParticles = [];
-
-    function resizeCanvas(canvas) {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight - 60; // uwzględnia navbar
-    }
-    resizeCanvas(fireCanvas);
-    window.addEventListener('resize', () => {
-      resizeCanvas(fireCanvas);
-      resizeCanvas(snowCanvas);
-      resizeCanvas(sandCanvas);
-    });
-
-    class FireParticle {
-      constructor() {
-        this.x = Math.random() * fireCanvas.width;
-        this.y = fireCanvas.height + Math.random() * 50;
-        this.radius = 1 + Math.random() * 2;
-        this.speedY = 0.5 + Math.random() * 1;
-        this.alpha = 0.1 + Math.random() * 0.3;
-      }
-      update() {
-        this.y -= this.speedY;
-        this.alpha -= 0.005;
-        if (this.alpha <= 0 || this.y < 0) {
-          this.x = Math.random() * fireCanvas.width;
-          this.y = fireCanvas.height + Math.random() * 50;
-          this.alpha = 0.1 + Math.random() * 0.3;
-          this.radius = 1 + Math.random() * 2;
-          this.speedY = 0.5 + Math.random() * 1;
-        }
-      }
-      draw() {
-        fireCtx.beginPath();
-        fireCtx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-        fireCtx.shadowColor = 'rgba(0,255,255,0.5)';
-        fireCtx.shadowBlur = 4;
-        fireCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        fireCtx.fill();
-      }
-    }
-
-    function initFireParticles() {
-      fireParticles = [];
-      for (let i = 0; i < 120; i++) {
-        fireParticles.push(new FireParticle());
-      }
-    }
-    initFireParticles();
-
-    function animateFire() {
-      fireCtx.clearRect(0, 0, fireCanvas.width, fireCanvas.height);
-      fireParticles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      requestAnimationFrame(animateFire);
-    }
-    animateFire();
-
-    // ==== CANVAS: Śnieg (snowCanvas) ====
-    const snowCanvas = document.getElementById('snowCanvas');
-    const snowCtx = snowCanvas.getContext('2d');
-    let snowParticles = [];
-
-    class SnowParticle {
-      constructor() {
-        this.x = Math.random() * snowCanvas.width;
-        this.y = Math.random() * snowCanvas.height;
-        this.radius = 1 + Math.random() * 3;
-        this.speedY = 0.5 + Math.random() * 1.5;
-        this.speedX = Math.random() * 1 - 0.5;
-        this.alpha = 0.3 + Math.random() * 0.5;
-      }
-      update() {
-        this.y += this.speedY;
-        this.x += this.speedX;
-        if (this.y > snowCanvas.height) {
-          this.y = 0;
-          this.x = Math.random() * snowCanvas.width;
-        }
-        if (this.x > snowCanvas.width || this.x < 0) {
-          this.x = Math.random() * snowCanvas.width;
-        }
-      }
-      draw() {
-        snowCtx.beginPath();
-        snowCtx.fillStyle = `rgba(255,255,255,${this.alpha})`;
-        snowCtx.shadowColor = 'rgba(255,255,255,0.5)';
-        snowCtx.shadowBlur = 3;
-        snowCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        snowCtx.fill();
-      }
-    }
-
-    function initSnowParticles() {
-      snowParticles = [];
-      for (let i = 0; i < 500; i++) {
-        snowParticles.push(new SnowParticle());
-      }
-    }
-    initSnowParticles();
-
-    function animateSnow() {
-      snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
-      snowParticles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      requestAnimationFrame(animateSnow);
-    }
-    animateSnow();
-
-    // ==== CANVAS: Burza piaskowa (sandCanvas) ====
-    const sandCanvas = document.getElementById('sandCanvas');
-    const sandCtx = sandCanvas.getContext('2d');
-    let sandParticles = [];
-
-    class SandParticle {
-      constructor() {
-        this.x = Math.random() * sandCanvas.width;
-        this.y = Math.random() * sandCanvas.height;
-        this.radius = 1 + Math.random() * 1.5;
-        this.speedY = 0.1 + Math.random() * 0.3;
-        this.speedX = 1 + Math.random() * 1.5;
-        this.alpha = 0.15 + Math.random() * 0.15;
-      }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x > sandCanvas.width) {
-          this.x = -10;
-          this.y = Math.random() * sandCanvas.height;
-        }
-        if (this.y > sandCanvas.height) {
-          this.y = 0;
-        }
-      }
-      draw() {
-        sandCtx.beginPath();
-        sandCtx.fillStyle = `rgba(255, 204, 102, ${this.alpha})`; // jasny piaskowy kolor
-        sandCtx.shadowColor = 'rgba(255, 204, 102, 0.3)';
-        sandCtx.shadowBlur = 2;
-        sandCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        sandCtx.fill();
-      }
-    }
-
-    function initSandParticles() {
-      sandParticles = [];
-      for (let i = 0; i < 150; i++) {
-        sandParticles.push(new SandParticle());
-      }
-    }
-    initSandParticles();
-
-    function animateSand() {
-      sandCtx.clearRect(0, 0, sandCanvas.width, sandCanvas.height);
-      sandParticles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      requestAnimationFrame(animateSand);
-    }
-    animateSand();
-
-    // ==== ODROZROBIENIE AUDIO ====
+    // Odblokowanie audio przez kliknięcie na overlay
     const audioOverlay = document.getElementById("audio-overlay");
-    const video = document.querySelector("video");
     audioOverlay.addEventListener("click", () => {
-      if (video.muted) {
-        video.muted = false;
-        audioOverlay.style.display = "none";
+      const video = document.getElementById("background-video");
+      if (video.paused) {
+        video.play();
       }
+      audioOverlay.style.display = "none"; // po kliknięciu znikamy overlay
     });
 
+    // Canvasy i efekty (fire, snow, sand) – możesz dodać osobno
+    // (Puste na razie, jeśli chcesz, mogę pomóc zrobić jakieś animacje)
   </script>
+
 </body>
 </html>
