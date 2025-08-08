@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Autoplay Video z Dźwiękiem</title>
+  <title>Autoplay z Dźwiękiem</title>
   <style>
     body, html {
       margin: 0;
       padding: 0;
       height: 100%;
-      overflow: hidden;
       background: black;
+      overflow: hidden;
     }
     video {
       position: fixed;
@@ -19,40 +19,68 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      z-index: 0;
+    }
+    #welcome {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 1;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #welcome button {
+      margin-top: 20px;
+      padding: 15px 30px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background: #ff4444;
+      color: white;
+      transition: 0.3s;
+    }
+    #welcome button:hover {
+      background: #cc0000;
     }
   </style>
 </head>
 <body>
-  <video id="bg-video" autoplay playsinline>
+  <!-- Wideo w tle -->
+  <video id="bg-video" playsinline>
     <source src="twojfilm.mp4" type="video/mp4">
     Twoja przeglądarka nie wspiera HTML5 video.
   </video>
 
+  <!-- Ekran powitalny -->
+  <div id="welcome">
+    <h1>Witamy na stronie</h1>
+    <p>Kliknij, aby rozpocząć</p>
+    <button id="startBtn">Wejdź</button>
+  </div>
+
   <script>
     const video = document.getElementById('bg-video');
+    const welcome = document.getElementById('welcome');
+    const startBtn = document.getElementById('startBtn');
 
-    // Spróbuj od razu włączyć z dźwiękiem
-    video.muted = false;
-    video.currentTime = 0;
-    video.play().catch(() => {
-      // Jeśli się nie udało (blokada autoplay), włącz muted
-      video.muted = true;
-      video.play().catch(() => {});
-    });
-
-    // Automatyczne włączenie audio przy pierwszym ruchu myszy / scrollu / kliknięciu
-    const enableAudio = () => {
+    startBtn.addEventListener('click', () => {
+      // Uruchamiamy wideo z dźwiękiem po kliknięciu
       video.muted = false;
       video.currentTime = 0;
-      video.play().catch(() => {});
-      document.removeEventListener('click', enableAudio);
-      document.removeEventListener('mousemove', enableAudio);
-      document.removeEventListener('wheel', enableAudio);
-    };
+      video.play().catch(err => console.error(err));
 
-    document.addEventListener('click', enableAudio);
-    document.addEventListener('mousemove', enableAudio);
-    document.addEventListener('wheel', enableAudio);
+      // Usuwamy ekran powitalny
+      welcome.style.display = 'none';
+    });
   </script>
 </body>
 </html>
